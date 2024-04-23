@@ -69,15 +69,22 @@ df['transferor'].sample(50).str[-15:]
 
 # %%
 # create charity number cols by extracting contents of last group in parentheses
+# and filling any null values with any string of 5+ numbers
 df['transferor_number'] = df['transferor'].str.lower().str.extract(
     pat='\(([^\(]+?)\)$'
 )
 df['transferor_number'] = df['transferor_number'].str.replace(pat='[\-\.\/]', repl='-')
+df['transferor_number'] = df['transferor_number'].combine_first(
+    df['transferor'].str.extract(pat='(\d{5,})')
+)
 
 df['transferee_number'] = df['transferee'].str.lower().str.extract(
     pat='\(([^\(]+?)\)$'
 )
 df['transferee_number'] = df['transferee_number'].str.replace(pat='[\-\.\/]', repl='-')
+df['transferee_number'] = df['transferee_number'].combine_first(
+    df['transferee'].str.extract(pat='(\d{5,})')
+)
 
 # %%
 # list values that are not charity numbers
