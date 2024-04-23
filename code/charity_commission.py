@@ -65,17 +65,17 @@ df[date_cols] = df[date_cols].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y
 df.head()
 
 # %%
-df['transferor'].str[-15:][:50]
+df['transferor'].sample(50).str[-15:]
 
 # %%
-# create charity number cols
-df['transferor_number'] = df['transferor'].str.extract(
-    pat='([\d\-\.\/]{5,})'
+# create charity number cols by extracting contents of last group in parentheses
+df['transferor_number'] = df['transferor'].str.lower().str.extract(
+    pat='\(([^\(]+?)\)$'
 )
 df['transferor_number'] = df['transferor_number'].str.replace(pat='[\-\.\/]', repl='-')
 
-df['transferee_number'] = df['transferee'].str.extract(
-    pat='([\d\-\.\/]{5,})'
+df['transferee_number'] = df['transferee'].str.lower().str.extract(
+    pat='\(([^\(]+?)\)$'
 )
 df['transferee_number'] = df['transferee_number'].str.replace(pat='[\-\.\/]', repl='-')
 
