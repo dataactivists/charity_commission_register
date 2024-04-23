@@ -1,0 +1,28 @@
+* Charity Commission register analysis
+This repo will contain an analysis of Charity Commission register data.
+
+For starters, the analysis covers the [[https://www.gov.uk/government/publications/register-of-merged-charities][Register of merged charities]] data.
+
+See the [[https://github.com/harabat/charity_commission_register/blob/main/code/charity_commission.ipynb][notebook]] for the charts.
+** Register of merged charities
+*** Most frequent transferors
+Most transferors are unregistered, exempt, or excepted.
+
+Most registered transferors are only transferors once or twice (which makes sense, as they get merged into the transferee).
+
+In one case, a number of hospital departments seem to have merged into one entity (/The County Durham and Darlington NHS Foundation Trust Charity/).
+
+/The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire/ has managed to be the transferor 5 times.
+*** Most frequent transferees
+Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
+
+Most transferees only go through a merger <5 times.
+
+Summary from a [[https://search.brave.com/search?q=The+Kingdom+Hall+Trust+&summary=1][Brave]] search:
+
+The Kingdom Hall Trust:
+- Previously known as the London Company of Kingdom Witnesses, it was established on 28th July 1939 and changed its name to The Kingdom Hall Trust on 20th June 1994.
+- It is a charity associated with Jehovah’s Witnesses, with the charity number GB-CHC-275946.
+- The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah’s Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
+
+Other big transferees are Victim Support and The Mission to Seafarers.
