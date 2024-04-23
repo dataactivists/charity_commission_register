@@ -232,3 +232,31 @@ df[['transferor', 'transferee']].loc[
 # - Previously known as the London Company of Kingdom Witnesses, it was established on 28th July 1939 and changed its name to The Kingdom Hall Trust on 20th June 1994.
 # - It is a charity associated with Jehovah’s Witnesses, with the charity number GB-CHC-275946.
 # - The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah’s Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
+
+# %% [markdown]
+# #### Count of mergers per year
+
+# %%
+merger_counts = df.groupby(
+    df['date_registered'].dt.year, as_index=True
+)['date_registered'].count()
+
+merger_counts = merger_counts.to_frame('count').reset_index()
+
+merger_counts.T
+
+# %%
+chart = (
+    alt.Chart(merger_counts)
+    .mark_bar()
+    .encode(
+        alt.Y('date_registered:N', title=''),
+        alt.X('count:Q', title=''),
+        alt.Color('date_registered:N', legend=None, scale=alt.Scale(scheme='dark2')),
+    )
+    .properties(
+        title='Mergers per year, 11/2007-03/2024',
+        width=600
+    )
+)
+chart
