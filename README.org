@@ -6,13 +6,13 @@ For starters, the analysis covers the [[https://www.gov.uk/government/publicatio
 See the [[https://github.com/harabat/charity_commission_register/blob/main/code/charity_commission.ipynb][notebook]] for the charts.
 ** Register of merged charities
 *** Most frequent transferors
-Most transferors are unregistered, exempt, or excepted.
+Most transferors are unregistered, exempt, or excepted. This probably indicates that most mergers are of very small charities officially joining bigger ones.
 
-Most registered transferors are only transferors once or twice (which makes sense, as they get merged into the transferee).
+Most registered transferors have only been in the position of transferring charity once or twice: this makes sense, as a transferor will get merged into the transferee, as a rule.
 
 In one case, a number of hospital departments seem to have merged into one entity (/The County Durham and Darlington NHS Foundation Trust Charity/).
 
-/The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire/ has managed to be the transferor 5 times.
+/The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire/ is the most frequent transferor among registered charities, having beein in that position 5 times.
 *** Most frequent transferees
 Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
 
@@ -26,3 +26,7 @@ The Kingdom Hall Trust:
 - The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah’s Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
 
 Other big transferees are Victim Support and The Mission to Seafarers.
+*** Merger counts
+[[./charts/merger_counts.png]]
+
+That spike in 2022? It's the merger of 1279 Jehovah's Witnesses churches into The Kingdom Hall Trust.
