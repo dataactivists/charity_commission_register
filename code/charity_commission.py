@@ -145,10 +145,30 @@ df['transferee_number'].loc[
 # ### Number of mergers over time
 
 # %% [markdown]
-# #### Most frequent transferors/transferees
+# #### Most frequent transferors
 
 # %%
-df['transferor_number'].value_counts()
+df['transferor_number'].value_counts()[:10]
+
+# %%
+df['transferor_number'].value_counts().iloc[:100].plot(kind='bar').set_xticks([])
+
+# %% [markdown]
+# Most transferors are unregistered, exempt, or excepted. 
+#
+# Most registered transferors are only transferors once or twice (which makes sense, as they get merged into the transferee).
+
+# %%
+df[['transferor', 'transferee']].loc[df['transferor'].str.contains('1053467')]
+
+# %%
+df['transferor'].value_counts()[:10]
+
+# %% [markdown]
+# In one case, a number of hospital departments seem to have merged into one entity (*The County Durham and Darlington NHS Foundation Trust Charity*). 
+#
+# *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* has managed to be the transferor 5 times. 
+
 
 # %%
 df['transferor_number'].str.extract('(\d{5,})').value_counts()
