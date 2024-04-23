@@ -79,7 +79,60 @@ df['transferee_number'] = df['transferee'].str.lower().str.extract(
 )
 df['transferee_number'] = df['transferee_number'].str.replace(pat='[\-\.\/]', repl='-')
 
-df.iloc[10:20]
+# %%
+# list values that are not charity numbers
+df['transferor_number'].loc[
+    ~df['transferor_number'].apply(str).str.contains(r'\d')
+].value_counts()
+
+# %%
+# standardise values
+df['transferor_number'] = df['transferor_number'].replace(
+    to_replace={
+        'unregistered .*': 'unregistered',
+        'exempt .*': 'exempt',
+        'excepted .*': 'excepted',
+        'unincorporated .*': 'unincorporated',
+        'not registered': 'unregistered',
+    },
+    regex=True
+).replace(
+    to_replace={
+        value: 'other' for value in [
+            'unrestricted assets only', 
+            'formerly known as mount zion evangelical church',
+            'all excepted',
+            'herne bay branch',
+            'bottley',
+            'mrs m gee trust',
+        ]
+    }
+)
+
+df['transferor_number'].loc[
+    ~df['transferor_number'].apply(str).str.contains(r'\d')
+].value_counts()
+
+# %%
+# list values that are not charity numbers
+df['transferee_number'].loc[
+    ~df['transferee_number'].apply(str).str.contains(r'\d')
+].value_counts()
+
+# %%
+# standardise values
+df['transferee_number'] = df['transferee_number'].replace(
+    to_replace={
+        'exempt charity': 'exempt',
+        'incorporating the merrett bequest': 'other',
+        'cio': 'other',
+        'picpus': 'other',
+    }
+)
+
+df['transferee_number'].loc[
+    ~df['transferee_number'].apply(str).str.contains(r'\d')
+].value_counts()
 
 # %% [markdown]
 # ### Number of mergers over time
