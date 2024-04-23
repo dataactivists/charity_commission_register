@@ -151,23 +151,28 @@ df['transferee_number'].loc[
 df['transferor_number'].value_counts()[:10]
 
 # %%
-df['transferor_number'].value_counts().iloc[:100].plot(kind='bar').set_xticks([])
+transferor_freqs = df['transferor_number'].value_counts().value_counts().reset_index(name='freqs')
+
+transferor_freqs = transferor_freqs.sort_values(by='count')
+
+transferor_freqs
 
 # %% [markdown]
-# Most transferors are unregistered, exempt, or excepted. 
+# Most transferors are unregistered, exempt, or excepted. This probably indicates that most mergers are of very small charities officially joining bigger ones. 
 #
-# Most registered transferors are only transferors once or twice (which makes sense, as they get merged into the transferee).
+# Most registered transferors have only been in the position of transferring charity once or twice: this makes sense, as a transferor will get merged into the transferee, as a rule.
 
 # %%
 df[['transferor', 'transferee']].loc[df['transferor'].str.contains('1053467')]
+
+# %% [markdown]
+# In one case, a number of hospital departments seem to have merged into one entity (*The County Durham and Darlington NHS Foundation Trust Charity*). 
 
 # %%
 df['transferor'].value_counts()[:10]
 
 # %% [markdown]
-# In one case, a number of hospital departments seem to have merged into one entity (*The County Durham and Darlington NHS Foundation Trust Charity*). 
-#
-# *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* has managed to be the transferor 5 times. 
+# *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* is the most frequent transferor among registered charities, having beein in that position 5 times. 
 
 # %% [markdown]
 # #### Most frequent transferors
