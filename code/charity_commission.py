@@ -175,10 +175,29 @@ df['transferor'].value_counts()[:10]
 # *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* is the most frequent transferor among registered charities, having beein in that position 5 times. 
 
 # %% [markdown]
-# #### Most frequent transferors
+# #### Most frequent transferees
 
 # %%
 df['transferee_number'].value_counts()[:10]
+
+# %%
+transferee_freqs = df['transferee_number'].value_counts().value_counts().reset_index(name='freqs')
+
+transferee_freqs = transferee_freqs.sort_values(by='count')
+
+transferee_freqs
+
+# %%
+chart = (
+    alt.Chart(transferee_freqs)
+    .mark_bar()
+    .encode(
+        alt.X('count:Q'),
+        alt.Y('freqs:Q')
+    )
+)
+
+chart
 
 # %%
 df['transferee_number'].value_counts().iloc[:100].plot(kind='bar').set_xticks([])
