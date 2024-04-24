@@ -29,12 +29,15 @@
 # ### Imports
 # %%
 import altair as alt
-
+import json
 import pandas as pd
 import seaborn as sns
 from ydata_profiling import ProfileReport
 # %% [markdown]
 # ### Cleaning
+
+# %% [markdown]
+# #### Cleaning merger data
 
 # %%
 df = pd.read_csv('../data/mergers_register_march_2024.csv', encoding='cp1252')
@@ -140,6 +143,57 @@ df['transferee_number'] = df['transferee_number'].replace(
 df['transferee_number'].loc[
     ~df['transferee_number'].apply(str).str.contains(r'\d')
 ].value_counts()
+
+# %% [markdown]
+# #### Joining with annual returns data
+
+# %%
+with open(
+    '../data/publicextract.charity_annual_return_history.json', 'r', encoding='utf-8-sig'
+) as file:
+    data = json.load(file)
+
+df_ar = pd.DataFrame(data)
+
+# %%
+df_ar.head()
+
+# %%
+df_ar = df_ar[[
+    'date_of_extract',
+    'registered_charity_number',
+    'fin_period_start_date',
+    'fin_period_end_date',
+    'total_gross_income',
+    'total_gross_expenditure',
+]]
+
+# %%
+df_ar.dtypes
+
+# %%
+date_cols = [
+    'date_of_extract',
+    'fin_period_start_date',
+    'fin_period_end_date',
+]
+
+df_ar[date_cols] = df_ar[date_cols].apply(pd.to_datetime)
+
+df_ar.head()
+
+# %%
+df_ar.dtypes
+
+# %%
+df_ar['fin_start_year'] = df_ar['fin_period_start_date'].dt.year
+df_ar['fin_end_year'] = df_ar['fin_period_end_date'].dt.year
+
+# %%
+df_ar.head()
+
+# %%
+df['merger_year'] = df['date_transferred'].dt.year
 
 # %% [markdown]
 # ### Number of mergers over time
