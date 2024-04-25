@@ -139,20 +139,31 @@ chart_transfer = (
     .mark_bar()
     .encode(
         alt.X('year(date_transferred):T'),
-        alt.Y('count():Q')
+        alt.Y(
+            'count():Q',
+            title='count of records',
+            scale=alt.Scale(domain=[-100, 1600])
+        )
     )
 )
 
 chart_diff = (
     alt.Chart(df[['date_transferred', 'registered-transfer']])
-    .mark_line()
+    .mark_line(color='darkred')
     .encode(
         alt.X('year(date_transferred):T'),
-        alt.Y('registered-transfer:Q'),
+        alt.Y(
+            'registered-transfer:Q',
+            axis=alt.Axis(
+                title='date registered - date of transfer (years)',
+                titleColor='darkred'
+            ),
+            scale=alt.Scale(domain=[-2.5, 35])
+        )
     )
 )
 
-chart = chart_transfer + chart_diff
+chart = (chart_transfer + chart_diff).resolve_scale(y='independent')
 
 chart
 
