@@ -37,16 +37,19 @@ from ydata_profiling import ProfileReport
 # ### Cleaning
 
 # %% [markdown]
-# #### Cleaning merger data
+# #### Cleaning `merger` data
+
+# %% [markdown]
+# ##### Load data
 
 # %%
 df = pd.read_csv('../data/mergers_register_march_2024.csv', encoding='cp1252')
 
-# %%
-df.head()
+# %% [markdown]
+# ##### Cols
 
 # %%
-df.dtypes
+df.head()
 
 # %%
 # shorten col names
@@ -55,19 +58,38 @@ df.columns = [
 ]
 
 # %%
+df.info()
+
+# %%
+# drop column with null values
+df = df.drop(columns='date_vesting')
+
+# %% [markdown]
+# ##### `dtypes`
+
+# %%
+df.dtypes
+
+# %%
 # convert first 2 cols to str
 df['transferor'] = df['transferor'].apply(str).apply(str.strip)
 df['transferee'] = df['transferee'].apply(str).apply(str.strip)
 
 # %%
 # convert date cols to datetime
-date_cols = ['date_vesting', 'date_transferred', 'date_registered']
+date_cols = ['date_transferred', 'date_registered']
 
 df[date_cols] = df[date_cols].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y'))
 
 df.head()
 
 # %%
+
+# %% [markdown]
+# ##### Extract charity numbers
+
+# %%
+# check how charity numbers are indicated
 df['transferor'].sample(50).str[-15:]
 
 # %%
@@ -96,7 +118,7 @@ df['transferor_number'].loc[
 ].value_counts()
 
 # %%
-# standardise values
+# standardise values that are not charity numbers
 df['transferor_number'] = df['transferor_number'].replace(
     to_replace={
         'unregistered .*': 'unregistered',
@@ -130,7 +152,7 @@ df['transferee_number'].loc[
 ].value_counts()
 
 # %%
-# standardise values
+# standardise values that are not charity numbers
 df['transferee_number'] = df['transferee_number'].replace(
     to_replace={
         'exempt charity': 'exempt',
@@ -145,7 +167,7 @@ df['transferee_number'].loc[
 ].value_counts()
 
 # %% [markdown]
-# #### Joining with annual returns data
+# #### Joining with `annual returns` data
 
 # %%
 with open(
