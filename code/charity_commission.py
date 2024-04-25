@@ -60,7 +60,6 @@ import altair as alt
 import json
 import pandas as pd
 import seaborn as sns
-from ydata_profiling import ProfileReport
 # %% [markdown]
 # ### Cleaning
 
