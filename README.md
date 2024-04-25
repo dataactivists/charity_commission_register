@@ -17,7 +17,7 @@ Some of the questions we want to look at:
 
 For starters, the analysis covers the [Register of merged charities](https://www.gov.uk/government/publications/register-of-merged-charities) data.
 
-See the [notebook export](https://github.com/harabat/charity_commission_register/blob/main/reports/charity_commission.html) for the charts.
+Run the [notebook](https://github.com/harabat/charity_commission_register/blob/main/code/charity_commission.ipynb) or view the [export](https://harabat.github.io/charity_commission_register/reports/charity_commission.html).
 
 ## Register of merged charities
 
