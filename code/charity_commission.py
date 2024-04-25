@@ -111,7 +111,51 @@ df[date_cols] = df[date_cols].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y
 
 df.head()
 
+# %% [markdown]
+# ##### Date cols
+
 # %%
+# shape of date_registered
+sns.histplot(df['date_registered'])
+
+# %%
+# shape of date_transferred
+sns.histplot(df['date_transferred'])
+
+# %%
+df['registered-transfer'] = (df['date_registered'] - df['date_transferred']).dt.days / 365
+
+df.sort_values('registered-transfer')
+
+# %%
+sns.lineplot(
+    data=df['registered-transfer'].value_counts().reset_index(),
+    x='registered-transfer',
+    y='count'
+)
+
+# %%
+chart_transfer = (
+    alt.Chart(df['date_transferred'].to_frame())
+    .mark_bar()
+    .encode(
+        alt.X('year(date_transferred):T'),
+        alt.Y('count():Q')
+    )
+)
+
+chart_diff = (
+    alt.Chart(df[['date_transferred', 'registered-transfer']])
+    .mark_line()
+    .encode(
+        alt.X('year(date_transferred):T'),
+        alt.Y('registered-transfer:Q'),
+    )
+)
+
+chart = chart_transfer + chart_diff
+
+chart
 
 # %% [markdown]
 # ##### Extract charity numbers
