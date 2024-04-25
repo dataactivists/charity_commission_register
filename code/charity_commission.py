@@ -172,7 +172,7 @@ df['transferor_number'] = df['transferor'].str.lower().str.extract(
 )
 df['transferor_number'] = df['transferor_number'].str.replace(pat='[\-\.\/]', repl='-')
 df['transferor_number'] = df['transferor_number'].combine_first(
-    df['transferor'].str.extract(pat='(\d{5,})')
+    df['transferor'].str.extract(pat='(\d{5,})')[0]
 )
 
 df['transferee_number'] = df['transferee'].str.lower().str.extract(
@@ -180,7 +180,7 @@ df['transferee_number'] = df['transferee'].str.lower().str.extract(
 )
 df['transferee_number'] = df['transferee_number'].str.replace(pat='[\-\.\/]', repl='-')
 df['transferee_number'] = df['transferee_number'].combine_first(
-    df['transferee'].str.extract(pat='(\d{5,})')
+    df['transferee'].str.extract(pat='(\d{5,})')[0]
 )
 
 # %%
