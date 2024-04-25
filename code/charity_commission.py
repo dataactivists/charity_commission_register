@@ -14,7 +14,7 @@
 # ---
 
 # %% [markdown]
-# # Charity Commission register
+# # Charity Commission register: exploratory analysis
 
 # %% [markdown]
 # ## Roadmap
