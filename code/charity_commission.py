@@ -113,59 +113,94 @@ df.head()
 # %% [markdown]
 # ##### Date cols
 
-# %%
-# shape of date_registered
-sns.histplot(df['date_registered'])
+# %% [markdown]
+# This dataset contains transfers dated from 1990, while registrations only start in 2007. 
 
 # %%
-# shape of date_transferred
-sns.histplot(df['date_transferred'])
-
-# %%
+# calculate timespan between date of transfer and date of registration
 df['registered-transfer'] = (df['date_registered'] - df['date_transferred']).dt.days / 365
 
 df.sort_values('registered-transfer')
 
 # %%
-sns.lineplot(
-    data=df['registered-transfer'].value_counts().reset_index(),
-    x='registered-transfer',
-    y='count'
+# count of transfer and registration by year
+chart_transfer_bar = (
+    alt.Chart(df['date_transferred'].to_frame())
+    .mark_line(point=True)
+    .encode(
+        alt.X('count():Q', title=''),
+        alt.Y('year(date_transferred):T').sort('descending')
+    )
 )
 
+chart_registered_bar = (
+    alt.Chart(df['date_registered'].to_frame())
+    .mark_line(point=True)
+    .encode(
+        alt.X('count():Q', title=''),
+        alt.Y('year(date_registered):T').sort('descending')
+    )
+)
+
+chart = alt.hconcat(
+    chart_transfer_bar, chart_registered_bar
+).resolve_scale(y='shared').properties(
+    title='Count of transfers and registrations by year'
+)
+
+chart.save('../charts/count_transfer_registration_year.png')
+
+chart
+
 # %%
-chart_transfer = (
+# view the distribution of timespans between transfer and registration
+chart_transfer_bar = (
     alt.Chart(df['date_transferred'].to_frame())
     .mark_bar()
     .encode(
         alt.X('year(date_transferred):T'),
-        alt.Y(
-            'count():Q',
-            title='count of records',
-            scale=alt.Scale(domain=[-100, 1600])
+        alt.Y('count():Q').title('count of records').scale(alt.Scale(domain=[-100, 1600])
         )
     )
 )
 
-chart_diff = (
+chart_diff_line = (
     alt.Chart(df[['date_transferred', 'registered-transfer']])
     .mark_line(color='darkred')
     .encode(
         alt.X('year(date_transferred):T'),
-        alt.Y(
-            'registered-transfer:Q',
-            axis=alt.Axis(
+        alt.Y('registered-transfer:Q').axis(
+            alt.Axis(
                 title='date registered - date of transfer (years)',
                 titleColor='darkred'
-            ),
-            scale=alt.Scale(domain=[-2.5, 35])
-        )
+            )
+        ).scale(alt.Scale(domain=[-2.5, 35])),
+        alt.Tooltip('registered-transfer:Q')
     )
 )
 
-chart = (chart_transfer + chart_diff).resolve_scale(y='independent')
+chart_diff_hist = (
+    alt.Chart(df['registered-transfer'].to_frame())
+    .mark_bar(color='darkred')
+    .encode(
+        alt.X('count():Q').title('frequencies of N years between transfer and registration'),
+        alt.Y('registered-transfer:Q').title('').scale(alt.Scale(domain=[-2.5, 35])),
+    )
+)
+
+chart = alt.hconcat(
+    (chart_transfer_bar + chart_diff_line).resolve_scale(y='independent'),
+    chart_diff_hist
+).properties(
+    title='Differences between transfer and registration year'
+)
+
+chart.save('../charts/diff_transfer_registration_year.png')
 
 chart
+
+# %% [markdown]
+# It seems that the Register of merged charities contains mergers from 1990, while the registrations start in late 2007. 
 
 # %% [markdown]
 # ##### Extract charity numbers
