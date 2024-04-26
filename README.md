@@ -25,7 +25,7 @@ Run the [notebook](https://github.com/harabat/charity_commission_register/blob/m
 
 The data can be found at <https://www.gov.uk/government/publications/register-of-merged-charities>.
 
-Caveats:
+### Observations on data quality
 
 - The merger registration data is not accurate, especially the timespans between the dates of transfer and registration can go from -1y to 32y, but varies wildly even when outliers are removed. Ideally, this will be raised with the Charity Commission.
 - [Merging two or more Charitable Incorporated Organisations (CIOs)](https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios) does not require the merger to be registered. Consequently, the register of merged charities will be missing this data. Does this data need to be FOIA'd?
@@ -71,9 +71,9 @@ While this seems to be a reverse merger, it could also be the parent charity dis
 
 ### Most frequent transferees
 
-Without counting the outlier that merged 1200+ times, some transferees have gone through mergers \>40 times.
+Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
 
-Most transferees only go through a merger \<5 times.
+Most transferees only go through a merger <5 times.
 
 Summary from a [Brave](https://search.brave.com/search?q=The+Kingdom+Hall+Trust+&summary=1) search:
 
