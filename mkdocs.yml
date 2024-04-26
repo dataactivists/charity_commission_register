@@ -1,0 +1,54 @@
+site_name: Charity Commission register analysis
+site_url: https://harabat.github.io/charity_commission_register/
+site_description: An analysis of the Charity Commission's open data.
+repo_url: https://github.com/harabat/charity_commission_register
+repo_name: harabat/charity_commission_register
+docs_dir: "app/docs"
+site_dir: "app/site"
+
+theme:
+  name: material
+  logo: assets/favicon.ico
+  favicon: assets/favicon.ico
+  icon:
+    repo: octicons/mark-github-16
+  language: en
+  features:
+    - navigation.expand
+    - navigation.footer
+    - navigation.path
+    - navigation.tracking
+    - toc.integrate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+plugins:
+  - search:
+      separator: '[\s\-\.]+'
+
+markdown_extensions:
+  - admonition # callouts
+  - tables # tables
+  - pymdownx.details # information in dropdowns
+  - toc:
+      permalink: "#" # anchors for headings
+  - pymdownx.tasklist:
+      custom_checkbox: true # for lists with checkboxes
+
+nav:
+  - Readme: index.md
+  - Register of merged charities:
+    - Intro: register_of_merged_charities/intro.md
+    - State of the data: register_of_merged_charities/data_quality.md
+    - Most frequent transferors: register_of_merged_charities/most_frequent_transferors.md
+    - Most frequent transferees: register_of_merged_charities/most_frequent_transferees.md
+    - Merger counts: register_of_merged_charities/merger_counts.md
