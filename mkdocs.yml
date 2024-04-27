@@ -3,8 +3,8 @@ site_url: https://harabat.github.io/charity_commission_register/
 site_description: An analysis of the Charity Commission's open data.
 repo_url: https://github.com/harabat/charity_commission_register
 repo_name: harabat/charity_commission_register
-docs_dir: "app/docs"
-site_dir: "app/site"
+docs_dir: "reports/app/docs"
+site_dir: "reports/app/site"
 
 theme:
   name: material
