@@ -21,4 +21,4 @@ For starters, the analysis covers the [Register of merged charities](https://www
 
 You can **view the current insights** on the website: https://harabat.github.io/charity_commission_register/.
 
-For the code, run the [notebook](https://github.com/harabat/charity_commission_register/blob/main/code/charity_commission.ipynb) or view the [export](https://harabat.github.io/charity_commission_register/reports/charity_commission.html).
+For the code, run the [notebook](https://github.com/harabat/charity_commission_register/blob/main/code/charity_commission.ipynb) or view the [export](https://harabat.github.io/charity_commission_register/code/exports/charity_commission.html).
