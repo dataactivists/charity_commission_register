@@ -48,7 +48,8 @@ nav:
   - Readme: index.md
   - Register of merged charities:
     - Intro: register_of_merged_charities/intro.md
-    - State of the data: register_of_merged_charities/data_quality.md
-    - Most frequent transferors: register_of_merged_charities/most_frequent_transferors.md
-    - Most frequent transferees: register_of_merged_charities/most_frequent_transferees.md
+    - Data quality: register_of_merged_charities/data_quality.md
+    - Transferors: register_of_merged_charities/most_frequent_transferors.md
+    - Transferees: register_of_merged_charities/most_frequent_transferees.md
     - Merger counts: register_of_merged_charities/merger_counts.md
+    - Mergers by annual return: register_of_merged_charities/mergers_by_annual_return.md
