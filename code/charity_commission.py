@@ -383,57 +383,6 @@ df['transferee_number'].loc[
 # This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case. 
 
 # %% [markdown]
-# #### Joining with `annual returns` data
-
-# %%
-with open(
-    '../data/publicextract.charity_annual_return_history.json', 'r', encoding='utf-8-sig'
-) as file:
-    data = json.load(file)
-
-df_ar = pd.DataFrame(data)
-
-# %%
-df_ar.head()
-
-# %%
-df_ar = df_ar[[
-    'date_of_extract',
-    'registered_charity_number',
-    'fin_period_start_date',
-    'fin_period_end_date',
-    'total_gross_income',
-    'total_gross_expenditure',
-]]
-
-# %%
-df_ar.dtypes
-
-# %%
-date_cols = [
-    'date_of_extract',
-    'fin_period_start_date',
-    'fin_period_end_date',
-]
-
-df_ar[date_cols] = df_ar[date_cols].apply(pd.to_datetime)
-
-df_ar.head()
-
-# %%
-df_ar.dtypes
-
-# %%
-df_ar['fin_start_year'] = df_ar['fin_period_start_date'].dt.year
-df_ar['fin_end_year'] = df_ar['fin_period_end_date'].dt.year
-
-# %%
-df_ar.head()
-
-# %%
-df['merger_year'] = df['date_transferred'].dt.year
-
-# %% [markdown]
 # ### Number of mergers over time
 
 # %% [markdown]
@@ -659,3 +608,68 @@ chart = (
 chart.save('../charts/merger_counts.png')
 
 chart
+
+# %% [markdown]
+# ### Joining with `annual returns` data (draft)
+
+# %% [markdown]
+# #### Load data
+
+# %%
+with open(
+    '../data/publicextract.charity_annual_return_history.json', 'r', encoding='utf-8-sig'
+) as file:
+    data = json.load(file)
+
+df_ar = pd.DataFrame(data)
+
+# %% [markdown]
+# #### Cols
+
+# %%
+df_ar.head()
+
+# %%
+df_ar = df_ar[[
+    'date_of_extract',
+    'registered_charity_number',
+    'fin_period_start_date',
+    'fin_period_end_date',
+    'total_gross_income',
+    'total_gross_expenditure',
+]]
+
+# %% [markdown]
+# #### `dtypes`
+
+# %%
+df_ar.dtypes
+
+# %%
+date_cols = [
+    'date_of_extract',
+    'fin_period_start_date',
+    'fin_period_end_date',
+]
+
+df_ar[date_cols] = df_ar[date_cols].apply(pd.to_datetime)
+
+df_ar.head()
+
+# %%
+df_ar.dtypes
+
+# %% [markdown]
+# #### Date cols
+
+# %%
+df_ar['fin_start_year'] = df_ar['fin_period_start_date'].dt.year
+df_ar['fin_end_year'] = df_ar['fin_period_end_date'].dt.year
+
+df_ar.head()
+
+# %% [markdown]
+# #### Merge
+
+# %%
+df['merger_year'] = df['date_transferred'].dt.year
