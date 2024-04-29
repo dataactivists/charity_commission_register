@@ -294,8 +294,12 @@ chart
 # ##### Extract charity numbers
 
 # %%
-# check how charity numbers are indicated
-df['transferor'].sample(50).str[-15:]
+# check how charity numbers are indicated at end of string
+df['transferor'].sample(10, random_state=42).str[-35:]
+
+# %%
+# separators in charity numbers
+df['transferor'].str.extract('\(\d+(\D)\d+\)$').dropna()[0].unique()
 
 # %%
 # create charity number cols by extracting contents of last group in parentheses
@@ -319,7 +323,7 @@ df['transferee_number'] = df['transferee_number'].combine_first(
 # %%
 # list values that are not charity numbers
 df['transferor_number'].loc[
-    ~df['transferor_number'].apply(str).str.contains(r'\d')
+    df['transferor_number'].apply(str).str.contains(r'[a-zA-Z]')
 ].value_counts()
 
 # %%
@@ -327,8 +331,8 @@ df['transferor_number'].loc[
 df['transferor_number'] = df['transferor_number'].replace(
     to_replace={
         'unregistered .*': 'unregistered',
-        'exempt .*': 'exempt',
-        'excepted .*': 'excepted',
+        'exempt.*': 'exempt',
+        '.*excepted.*': 'excepted',
         'unincorporated .*': 'unincorporated',
         'not registered': 'unregistered',
     },
@@ -338,7 +342,6 @@ df['transferor_number'] = df['transferor_number'].replace(
         value: 'other' for value in [
             'unrestricted assets only', 
             'formerly known as mount zion evangelical church',
-            'all excepted',
             'herne bay branch',
             'bottley',
             'mrs m gee trust',
@@ -353,23 +356,33 @@ df['transferor_number'].loc[
 # %%
 # list values that are not charity numbers
 df['transferee_number'].loc[
-    ~df['transferee_number'].apply(str).str.contains(r'\d')
+    df['transferee_number'].apply(str).str.contains(r'[a-zA-Z]')
 ].value_counts()
 
 # %%
 # standardise values that are not charity numbers
 df['transferee_number'] = df['transferee_number'].replace(
     to_replace={
-        'exempt charity': 'exempt',
+        'exempt.*': 'exempt',
         'incorporating the merrett bequest': 'other',
         'cio': 'other',
         'picpus': 'other',
-    }
+    },
+    regex=True
 )
 
 df['transferee_number'].loc[
-    ~df['transferee_number'].apply(str).str.contains(r'\d')
+    df['transferee_number'].apply(str).str.contains(r'[a-zA-Z]')
 ].value_counts()
+
+# %% [markdown]
+# Charity numbers are indicated as a series of numbers between parentheses at the end of the string. 
+#
+# However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another). 
+#
+# Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies. 
+#
+# This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case. 
 
 # %% [markdown]
 # #### Joining with `annual returns` data
