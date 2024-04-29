@@ -673,3 +673,67 @@ df_ar.head()
 
 # %%
 df['merger_year'] = df['date_transferred'].dt.year
+df['merger_year_next'] = df['merger_year'].apply(lambda x: x + 1)
+
+df.head()
+
+# %%
+df_ar['registered_charity_number'] = df_ar['registered_charity_number'].apply(str)
+
+# %%
+df_ar = df_ar.drop(
+    columns=['date_of_extract', 'fin_period_start_date', 'fin_period_end_date', 'total_gross_expenditure']
+)
+
+# %%
+df_merged_transferee = df.drop(columns=['date_registered', 'registered-transfer']).merge(
+    df_ar,
+    left_on=['transferee_number', 'merger_year'],
+    right_on=['registered_charity_number', 'fin_start_year'],
+    how='left'
+).merge(
+    df_ar,
+    left_on=['transferee_number', 'merger_year_next'],
+    right_on=['registered_charity_number', 'fin_start_year'],
+    how='left'
+)
+
+# %%
+df_merged_transferor = df.drop(columns=['date_registered', 'registered-transfer']).merge(
+    df_ar,
+    left_on=['transferor_number', 'merger_year'],
+    right_on=['registered_charity_number', 'fin_start_year'],
+    how='left'
+).merge(
+    df_ar,
+    left_on=['transferor_number', 'merger_year_next'],
+    right_on=['registered_charity_number', 'fin_start_year'],
+    how='left'
+)
+
+# %% [markdown]
+# #### Effect
+
+# %%
+df_merged_transferee = df_merged_transferee.dropna(
+    subset=['total_gross_income_x', 'total_gross_income_y'],
+    how='all'
+)
+
+# %%
+df_merged_transferee['effect'] = (
+    (df_merged_transferee['total_gross_income_y'] - df_merged_transferee['total_gross_income_x'])
+    / df_merged_transferee['total_gross_income_x'] * 100
+)
+
+# %%
+df_merged_transferor = df_merged_transferor.dropna(
+    subset=['total_gross_income_x', 'total_gross_income_y'],
+    how='all'
+)
+
+# %%
+df_merged_transferor['effect'] = (
+    (df_merged_transferor['total_gross_income_y'] - df_merged_transferor['total_gross_income_x'])
+    / df_merged_transferor['total_gross_income_x'] * 100
+)
