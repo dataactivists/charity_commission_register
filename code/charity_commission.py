@@ -546,52 +546,83 @@ reverse_merger
 # #### Most frequent transferees
 
 # %%
+# check that frequent transferees are all registered
 df['transferee_number'].value_counts()[:10]
+
+# %%
+most_frequent_transferees = df['transferee'].value_counts()[:10].to_frame()
+
+dfi.export(
+    most_frequent_transferees,
+    '../charts/most_frequent_transferees.png',
+    table_conversion='selenium',
+)
+
+most_frequent_transferees
+
+# %% [markdown]
+# Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times. 
 
 # %%
 transferee_freqs = df['transferee_number'].value_counts().value_counts().reset_index(name='freqs')
 
 transferee_freqs = transferee_freqs.sort_values(by='count')
 
-transferee_freqs
+transferee_freqs.columns = ['count_of_mergers', 'frequency']
 
-# %%
-chart = (
-    alt.Chart(transferee_freqs)
-    .mark_bar()
-    .encode(
-        alt.X('count:Q'),
-        alt.Y('freqs:Q')
-    )
+transferee_freqs = transferee_freqs.set_index('count_of_mergers', drop=True)
+
+dfi.export(
+    transferee_freqs,
+    '../charts/transferee_freqs.png',
+    table_conversion='selenium'
 )
 
-chart
-
-# %%
-df['transferee_number'].value_counts().iloc[:100].plot(kind='bar').set_xticks([])
+transferee_freqs
 
 # %% [markdown]
-# Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times. 
-#
 # Most transferees only go through a merger <5 times.
 
 # %%
-df['transferee'].value_counts()[:10]
-
-# %%
-df[['transferor', 'transferee']].loc[
+consolidation_merger_kingdom_hall_trust = df[['transferor', 'transferee']].loc[
     df['transferee'].str.contains('Kingdom Hall Trust')
 ].head()
+
+dfi.export(
+    consolidation_merger_kingdom_hall_trust,
+    '../charts/consolidation_merger_kingdom_hall_trust.png',
+    table_conversion='selenium'
+)
+
+consolidation_merger_kingdom_hall_trust = consolidation_merger_kingdom_hall_trust.set_index(
+    'transferor', drop=True
+)
+
+consolidation_merger_kingdom_hall_trust
 
 # %%
 df[['transferor', 'transferee']].loc[
     df['transferee'].str.contains('Victim Support')
 ].head()
 
-# %%
-df[['transferor', 'transferee']].loc[
-    df['transferee'].str.contains('Mission to Seafarers')
+consolidation_merger_victim_support = df[['transferor', 'transferee']].loc[
+    df['transferee'].str.contains('Victim Support')
 ].head()
+
+dfi.export(
+    consolidation_merger_victim_support,
+    '../charts/consolidation_merger_victim_support.png',
+    table_conversion='selenium'
+)
+
+consolidation_merger_victim_support = consolidation_merger_victim_support.set_index(
+    'transferor', drop=True
+)
+
+consolidation_merger_victim_support
+
+# %% [markdown]
+# Both Kingdom Hall Trust and Victim Support (and other frequent transferees) seem to be consolidation mergers. 
 
 # %% [markdown]
 # Summary from a [Brave](https://search.brave.com/search?q=The+Kingdom+Hall+Trust+&summary=1) search:
