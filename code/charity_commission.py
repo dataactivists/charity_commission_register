@@ -654,8 +654,11 @@ chart = (
         alt.Color('date_registered:N', legend=None, scale=alt.Scale(scheme='dark2')),
     )
     .properties(
-        title='Mergers per year, 11/2007-03/2024',
+        title='Mergers per year, 2008-2024',
         width=600
     )
 )
+
+chart.save('../charts/merger_counts.png')
+
 chart
