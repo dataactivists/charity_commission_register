@@ -62,19 +62,16 @@ import json
 import pandas as pd
 import seaborn as sns
 # %% [markdown]
-# ### Cleaning
+# ### Cleaning `merger` data
 
 # %% [markdown]
-# #### Cleaning `merger` data
-
-# %% [markdown]
-# ##### Load data
+# #### Load data
 
 # %%
 df = pd.read_csv('../data/mergers_register_march_2024.csv', encoding='cp1252')
 
 # %% [markdown]
-# ##### Cols
+# #### Cols
 
 # %%
 df.head()
@@ -93,7 +90,7 @@ df.info()
 df = df.drop(columns='date_vesting')
 
 # %% [markdown]
-# ##### `dtypes`
+# #### `dtypes`
 
 # %%
 df.dtypes
@@ -112,7 +109,7 @@ df[date_cols] = df[date_cols].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y
 df.head()
 
 # %% [markdown]
-# ##### Date cols
+# #### Date cols
 
 # %% [markdown]
 # This dataset contains transfers dated from 1990, while registrations only start in 2007. 
@@ -292,7 +289,7 @@ chart.save('../charts/diff_transfer_registration_year_trimmed.png')
 chart
 
 # %% [markdown]
-# ##### Extract charity numbers
+# #### Extract charity numbers
 
 # %%
 # check how charity numbers are indicated at end of string
