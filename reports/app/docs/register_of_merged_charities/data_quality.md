@@ -21,3 +21,17 @@ The *Register of merged charities* contains mergers from 1990, while the registr
 It seems unlikely that these very few ancient transfers and their late registrations represent reality. The repetitive seesaw pattern also seems to indicate errors, though it's not obvious what it's due to.
 
 We'll choose to drop any transfers from <2008 in our analysis, as they are few and represent the bulk of the long `registered-transfer` durations.
+
+### No standard way of indicating charity numbers
+
+Charity numbers are indicated as a series of numbers between parentheses at the end of the string.
+
+However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another). 
+
+![](../assets/no_charity_numbers_transferors.png)
+
+![](../assets/no_charity_numbers_transferees.png)
+
+Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies.
+
+This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case.
