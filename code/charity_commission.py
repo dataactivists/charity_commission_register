@@ -737,3 +737,102 @@ df_merged_transferor['effect'] = (
     (df_merged_transferor['total_gross_income_y'] - df_merged_transferor['total_gross_income_x'])
     / df_merged_transferor['total_gross_income_x'] * 100
 )
+
+# %% [markdown]
+# ### Effect of mergers on annual return (draft)
+
+# %%
+new_charities = df_merged_transferee.loc[
+    (
+        pd.isna(df_merged_transferee['total_gross_income_x'])
+        | (df_merged_transferee['total_gross_income_x'] == 0)
+    )
+    & (df_merged_transferee['total_gross_income_y'] > 0)
+].shape[0] / df_merged_transferee.shape[0]
+
+print(f'{new_charities:.0%} of mergers result in the creation of new charities')
+
+# %%
+existing_charities = df_merged_transferee.loc[
+    ~(
+        pd.isna(df_merged_transferee['total_gross_income_x'])
+        | (df_merged_transferee['total_gross_income_x'] == 0)
+    )
+]
+
+# %%
+chart = (
+    alt.Chart(existing_charities['effect'].dropna().apply(round).to_frame())
+    .mark_bar()
+    .encode(
+        alt.X('effect:Q').scale(domain=[-105, 105], clamp=True).title('effect (%)'),
+        alt.Y('count():Q').title('')
+    )
+).properties(
+    title='Effect of mergers on annual return of transferees'
+)
+
+chart.save('../charts/effect_transferees.png')
+
+chart
+
+# %% [markdown]
+# Most mergers seem to result in the transferee having a 80% decrease of their annual return.
+#
+# This peak at 1200 is reminiscent of a previous chart however...
+
+# %%
+existing_charities.loc[
+    (existing_charities['effect'] < -75)
+    & (existing_charities['effect'] > -80) 
+]
+
+# %% [markdown]
+# What happens if we exclude Kingdom Hall Trust from our analysis?
+
+# %%
+chart = (
+    alt.Chart(existing_charities.loc[~existing_charities['transferee'].str.lower().str.contains('kingdom hall')]['effect'].dropna().apply(round).to_frame())
+    .mark_bar()
+    .encode(
+        alt.X('effect:Q').scale(domain=[-105, 105], clamp=True).title('effect (%)'),
+        alt.Y('count():Q').title('')
+    )
+).properties(
+    title=['Effect of mergers on annual return of transferees', '(sans Kingdom Hall Trust)']
+)
+
+chart.save('../charts/effect_transferees_sans.png')
+
+chart
+
+# %% [markdown]
+# The bulk of transferees seem to have had +/- 40% change to their annual returns within the financial period that a merger happened in. 
+
+# %%
+chart = (
+    alt.Chart(df_merged_transferor['effect'].dropna().apply(round).to_frame())
+    .mark_bar()
+    .encode(
+        alt.X('effect:Q').title('effect (%)'),
+        alt.Y('count():Q').title('')
+    )
+).properties(
+    title='Effect of mergers on annual return of transferors'
+)
+
+chart.save('../charts/effect_transferors.png')
+
+chart
+
+# %%
+chart = (
+    alt.Chart(df_merged_transferor['effect'].dropna().apply(round).to_frame())
+    .mark_bar()
+    .encode(
+        alt.X('effect:Q'),
+        alt.Y('count():Q')
+    )
+)
+
+chart
