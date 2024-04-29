@@ -57,6 +57,7 @@
 # ### Imports
 # %%
 import altair as alt
+import dataframe_image as dfi
 import json
 import pandas as pd
 import seaborn as sns
@@ -442,7 +443,15 @@ df['merger_year'] = df['date_transferred'].dt.year
 # #### Most frequent transferors
 
 # %%
-df['transferor_number'].value_counts()[:10].to_frame()
+most_frequent_transferors = df['transferor_number'].value_counts()[:10].to_frame()
+
+dfi.export(
+    most_frequent_transferors,
+    '../charts/most_frequent_transferors.png',
+    table_conversion='selenium',
+)
+
+most_frequent_transferors
 
 # %% [markdown]
 # Most transferors are unregistered, exempt, or excepted.
@@ -460,11 +469,23 @@ df['transferor_number'].value_counts()[:10].to_frame()
 #
 # - Mergers of **very small charities (which are unregistered/exempt) officially joining bigger ones**. It's likely that these small charities are merging with larger ones to gain economies of scale, access to more resources, or to increase their impact. Alternatively, they might be facing hurdles due to funding constraints, regulatory burdens, or other challenges, and merging with a larger charity is a way to ensure their assets and mission continue.
 # - Mergers of charities into **a new structure (CIO or charitable company)**.
+#
+# We'll look at charities 1053467 (75 mergers) and 1189059 (5 mergers) later.
 
 # %%
 transferor_freqs = df['transferor_number'].value_counts().value_counts().reset_index(name='freqs')
 
 transferor_freqs = transferor_freqs.sort_values(by='count')
+
+transferor_freqs.columns = ['count_of_mergers', 'frequency']
+
+transferor_freqs = transferor_freqs.set_index('count_of_mergers', drop=True)
+
+dfi.export(
+    transferor_freqs,
+    '../charts/transferor_freqs.png',
+    table_conversion='selenium'
+)
 
 transferor_freqs
 
@@ -481,7 +502,17 @@ transferor_freqs
 # These repeat transferors might be falling into this second case. 
 
 # %%
-df[['transferor', 'transferee']].loc[df['transferor'].str.contains('1053467')].head()
+consolidation_merger = df[['transferor', 'transferee']].loc[df['transferor'].str.contains('1053467')].head()
+
+consolidation_merger = consolidation_merger.set_index('transferor', drop=True)
+
+dfi.export(
+    consolidation_merger,
+    '../charts/consolidation_merger.png',
+    table_conversion='selenium'
+)
+
+consolidation_merger
 
 # %% [markdown]
 # *The County Durham and Darlington NHS Foundation Trust Charity* seems to be a case of a large consolidation.
@@ -489,10 +520,20 @@ df[['transferor', 'transferee']].loc[df['transferor'].str.contains('1053467')].h
 # A number of department-specific NHS charities have merged into one entity. The aim could be to consolidate funds/reduce administrative overhead/streamline operations. 
 
 # %%
-df['transferor'].value_counts()[:10]
+df['transferor'].value_counts()[:10].to_frame()
 
 # %%
-df.loc[df['transferor_number'] == '1189059'].iloc[:,:2].values
+reverse_merger = df.loc[
+    df['transferor_number'] == '1189059'
+].set_index('transferee', drop=True)['transferor'].to_frame()
+
+dfi.export(
+    reverse_merger,
+    '../charts/reverse_merger.png',
+    table_conversion='selenium'
+)
+
+reverse_merger
 
 # %% [markdown]
 # *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* seems to be an example of a "merged" charity splitting into separate entities. 
