@@ -2,19 +2,19 @@
 
 ## Most frequent transferees
 
-![](../assets/most_frequent_transferees.png)
+<img src="../../assets/most_frequent_transferees.png" width="400">
 
 Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
 
-![](../assets/transferee_freqs.png)
+<img src="../../assets/transferee_freqs.png" width="150">
 
 Most transferees only go through a merger <5 times.
 
-![](../assets/consolidation_merger_kingdom_hall_trust.png)
+<img src="../../assets/consolidation_merger_kingdom_hall_trust.png" width="600">
 
-![](../assets/consolidation_merger_victim_support.png)
+<img src="../../assets/consolidation_merger_victim_support.png" width="500">
 
-Both Kingdom Hall Trust and Victim Support (and other frequent transferees) seem to be consolidation mergers. 
+Both *Kingdom Hall Trust* and *Victim Support* (and other frequent transferees) seem to be consolidation mergers. 
 
 Summary from a [Brave](https://search.brave.com/search?q=The+Kingdom+Hall+Trust+&summary=1) search:
 

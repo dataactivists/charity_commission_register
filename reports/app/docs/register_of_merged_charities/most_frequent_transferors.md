@@ -4,7 +4,7 @@
 
 ### Most transferors are unregistered, exempt, or excepted.
 
-![](../assets/most_frequent_transferors.png)
+<img src="../../assets/most_frequent_transferors.png" width="200">
 
 The [Guidance about the register of merged charities](https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#different-types-of-merger) states:
 
@@ -23,7 +23,7 @@ We'll look at charities 1053467 (75 mergers) and 1189059 (5 mergers) later.
 
 ### Most registered transferors have only been in the position of transferring charity once or twice.
 
-![](../assets/merger_freqs.png)
+<img src="../../assets/transferor_freqs.png" width="200">
 
 This makes sense, since the transferor charity typically ceases to exist as a separate entity after the merger.
 
@@ -36,13 +36,13 @@ These repeat transferors might be falling into this second case.
 
 ### *The County Durham and Darlington NHS Foundation Trust Charity* seems to be a case of a large consolidation.
 
-![](../assets/consolidation_merger.png)
+<img src="../../assets/consolidation_merger.png" width="700">
 
 A number of department-specific NHS charities have merged into one entity. The aim could be to consolidate funds/reduce administrative overhead/streamline operations.
 
 ### *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* seems to be an example of a "merged" charity splitting into separate entities.
 
-![](../assets/reverse_merger.png)
+<img src="../../assets/reverse_merger.png" width="700">
 
 It is the most frequent transferor among registered charities, having been in that position 5 times.
 

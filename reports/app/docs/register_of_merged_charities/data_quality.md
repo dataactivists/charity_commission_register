@@ -28,9 +28,9 @@ Charity numbers are indicated as a series of numbers between parentheses at the 
 
 However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another). 
 
-![](../assets/no_charity_numbers_transferors.png)
+<img src="../../assets/no_charity_numbers_transferors.png" width="400">
 
-![](../assets/no_charity_numbers_transferees.png)
+<img src="../../assets/no_charity_numbers_transferees.png" width="400">
 
 Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies.
 
