@@ -26,9 +26,8 @@
 # - [x] most frequent transferors
 # - [x] most frequent transferees
 # - [x] evolution of number of mergers per year
-# - [ ] the average time gap between each merger for repeat transferors/transferees?
-# - [ ] what are the annual returns of the transferee before/after the merger?
-# - [ ] what's the size of transferors/transferees in terms of annual return?
+# - [x] what are the annual returns of the transferee before/after the merger?
+# - [x] what's the size of transferors/transferees in terms of annual return?
 # - [ ] what is the median number of trustees per charity?
 # - [ ] who are "repeat trustees"?
 
