@@ -20,7 +20,7 @@
 # ## Roadmap
 
 # %% [markdown]
-# This repo aims to be an exhaustive analysis of the data released by the Charity Commission at https://register-of-charities.charitycommission.gov.uk/register/full-register-download. 
+# This repo aims to be an exhaustive analysis of the data released by the Charity Commission at https://register-of-charities.charitycommission.gov.uk/register/full-register-download.
 #
 # Some of the questions we want to look at:
 # - [x] most frequent transferors
@@ -44,12 +44,12 @@
 # ### Intro
 
 # %% [markdown]
-# The data can be found at https://www.gov.uk/government/publications/register-of-merged-charities. 
+# The data can be found at https://www.gov.uk/government/publications/register-of-merged-charities.
 
 # %% [markdown]
 # Caveats:
 #
-# - The merger registration data is not accurate, especially the timespans between the dates of transfer and registration can go from -1y to 32y, but varies wildly even when outliers are removed. Ideally, this will be raised with the Charity Commission. 
+# - The merger registration data is not accurate, especially the timespans between the dates of transfer and registration can go from -1y to 32y, but varies wildly even when outliers are removed. Ideally, this will be raised with the Charity Commission.
 # - [Merging two or more Charitable Incorporated Organisations (CIOs)](https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios) does not require the merger to be registered. Consequently, the register of merged charities will be missing this data. Does this data need to be FOIA'd?
 
 # %% [markdown]
@@ -78,7 +78,11 @@ df.head()
 # %%
 # shorten col names
 df.columns = [
-    'transferor', 'transferee', 'date_vesting', 'date_transferred', 'date_registered'
+    'transferor',
+    'transferee',
+    'date_vesting',
+    'date_transferred',
+    'date_registered',
 ]
 
 # %%
@@ -111,11 +115,13 @@ df.head()
 # #### Date cols
 
 # %% [markdown]
-# This dataset contains transfers dated from 1990, while registrations only start in 2007. 
+# This dataset contains transfers dated from 1990, while registrations only start in 2007.
 
 # %%
 # calculate timespan between date of transfer and date of registration
-df['registered-transfer'] = (df['date_registered'] - df['date_transferred']).dt.days / 365
+df['registered-transfer'] = (
+    df['date_registered'] - df['date_transferred']
+).dt.days / 365
 
 df.sort_values('registered-transfer')
 
@@ -126,7 +132,7 @@ chart_transfer_bar = (
     .mark_line(point=True)
     .encode(
         alt.X('count():Q', title=''),
-        alt.Y('year(date_transferred):T').sort('descending')
+        alt.Y('year(date_transferred):T').sort('descending'),
     )
 )
 
@@ -135,14 +141,14 @@ chart_registered_bar = (
     .mark_line(point=True)
     .encode(
         alt.X('count():Q', title=''),
-        alt.Y('year(date_registered):T').sort('descending')
+        alt.Y('year(date_registered):T').sort('descending'),
     )
 )
 
-chart = alt.hconcat(
-    chart_transfer_bar, chart_registered_bar
-).resolve_scale(y='shared').properties(
-    title='Count of transfers and registrations by year'
+chart = (
+    alt.hconcat(chart_transfer_bar, chart_registered_bar)
+    .resolve_scale(y='shared')
+    .properties(title='Count of transfers and registrations by year')
 )
 
 chart.save('../charts/count_transfer_registration_year.png')
@@ -156,7 +162,8 @@ chart_transfer_bar = (
     .mark_bar()
     .encode(
         alt.X('year(date_transferred):T'),
-        alt.Y('count():Q').title('count of records').scale(alt.Scale(domain=[-100, 1600])
+        alt.Y('count():Q').title('count of records').scale(
+            alt.Scale(domain=[-100, 1600])
         )
     )
 )
@@ -172,7 +179,7 @@ chart_diff_line = (
                 titleColor='darkred'
             )
         ).scale(alt.Scale(domain=[-2.5, 35])),
-        alt.Tooltip('registered-transfer:Q')
+        alt.Tooltip('registered-transfer:Q'),
     )
 )
 
@@ -180,16 +187,19 @@ chart_diff_hist = (
     alt.Chart(df['registered-transfer'].to_frame())
     .mark_bar(color='darkred')
     .encode(
-        alt.X('count():Q').title('frequencies of N years between transfer and registration'),
+        alt.X('count():Q').title(
+            'frequencies of N years between transfer and registration'
+        ),
         alt.Y('registered-transfer:Q').title('').scale(alt.Scale(domain=[-2.5, 35])),
     )
 )
 
-chart = alt.hconcat(
-    (chart_transfer_bar + chart_diff_line).resolve_scale(y='independent'),
-    chart_diff_hist
-).properties(
-    title='Differences between transfer and registration year'
+chart = (
+    alt.hconcat(
+        (chart_transfer_bar + chart_diff_line).resolve_scale(y='independent'),
+        chart_diff_hist
+    )
+    .properties(title='Differences between transfer and registration year')
 )
 
 chart.save('../charts/diff_transfer_registration_year.png')
@@ -197,14 +207,16 @@ chart.save('../charts/diff_transfer_registration_year.png')
 chart
 
 # %%
-df.loc[df['registered-transfer'] > 10].sort_values('registered-transfer', ascending=False)
+df.loc[df['registered-transfer'] > 10].sort_values(
+    'registered-transfer', ascending=False
+)
 
 # %% [markdown]
 # It seems that the *Register of merged charities* contains mergers from 1990, while the registrations start in late 2007.
 #
 # It seems unlikely that these very few ancient transfers and their late registrations represent reality. The repetitive seesaw pattern also seems to indicate errors, though it's not obvious what it's due to.
 #
-# We'll choose to drop any transfers from <2008 in our analysis, as they are few and represent the bulk of the long `registered-transfer` durations. 
+# We'll choose to drop any transfers from <2008 in our analysis, as they are few and represent the bulk of the long `registered-transfer` durations.
 
 # %%
 # drop transfers from <2008
@@ -217,7 +229,7 @@ chart_transfer_bar = (
     .mark_line(point=True)
     .encode(
         alt.X('count():Q', title=''),
-        alt.Y('year(date_transferred):T').sort('descending')
+        alt.Y('year(date_transferred):T').sort('descending'),
     )
 )
 
@@ -226,14 +238,14 @@ chart_registered_bar = (
     .mark_line(point=True)
     .encode(
         alt.X('count():Q', title=''),
-        alt.Y('year(date_registered):T').sort('descending')
+        alt.Y('year(date_registered):T').sort('descending'),
     )
 )
 
-chart = alt.hconcat(
-    chart_transfer_bar, chart_registered_bar
-).resolve_scale(y='shared').properties(
-    title='Count of transfers and registrations by year'
+chart = (
+    alt.hconcat(chart_transfer_bar, chart_registered_bar)
+    .resolve_scale(y='shared')
+    .properties(title='Count of transfers and registrations by year')
 )
 
 chart.save('../charts/count_transfer_registration_year_trimmed.png')
@@ -247,7 +259,8 @@ chart_transfer_bar = (
     .mark_bar()
     .encode(
         alt.X('year(date_transferred):T'),
-        alt.Y('count():Q').title('count of records').scale(alt.Scale(domain=[-100, 1600])
+        alt.Y('count():Q').title('count of records').scale(
+            alt.Scale(domain=[-100, 1600])
         )
     )
 )
@@ -263,7 +276,7 @@ chart_diff_line = (
                 titleColor='darkred'
             )
         ),
-        alt.Tooltip('registered-transfer:Q')
+        alt.Tooltip('registered-transfer:Q'),
     )
 )
 
@@ -271,16 +284,19 @@ chart_diff_hist = (
     alt.Chart(df['registered-transfer'].to_frame())
     .mark_bar(color='darkred')
     .encode(
-        alt.X('count():Q').title('frequencies of N years between transfer and registration'),
+        alt.X('count():Q').title(
+            'frequencies of N years between transfer and registration'
+        ),
         alt.Y('registered-transfer:Q').title(''),
     )
 )
 
-chart = alt.hconcat(
-    (chart_transfer_bar + chart_diff_line).resolve_scale(y='independent'),
-    chart_diff_hist
-).properties(
-    title='Differences between transfer and registration year'
+chart = (
+    alt.hconcat(
+        (chart_transfer_bar + chart_diff_line).resolve_scale(y='independent'),
+        chart_diff_hist
+    )
+    .properties(title='Differences between transfer and registration year')
 )
 
 chart.save('../charts/diff_transfer_registration_year_trimmed.png')
@@ -296,25 +312,25 @@ df['transferor'].sample(10, random_state=42).str[-35:]
 
 # %%
 # separators in charity numbers
-df['transferor'].str.extract('\(\d+(\D)\d+\)$').dropna()[0].unique()
+df['transferor'].str.extract(r'\(\d+(\D)\d+\)$').dropna()[0].unique()
 
 # %%
 # create charity number cols by extracting contents of last group in parentheses
 # and filling any null values with any string of 5+ numbers
 df['transferor_number'] = df['transferor'].str.lower().str.extract(
-    pat='\(([^\(]+?)\)$'
+    pat=r'\(([^\(]+?)\)$'
 )
-df['transferor_number'] = df['transferor_number'].str.replace(pat='[\-\.\/]', repl='-')
+df['transferor_number'] = df['transferor_number'].str.replace(pat=r'[\-\.\/]', repl='-')
 df['transferor_number'] = df['transferor_number'].combine_first(
-    df['transferor'].str.extract(pat='(\d{5,})')[0]
+    df['transferor'].str.extract(pat=r'(\d{5,})')[0]
 )
 
 df['transferee_number'] = df['transferee'].str.lower().str.extract(
-    pat='\(([^\(]+?)\)$'
+    pat=r'\(([^\(]+?)\)$'
 )
-df['transferee_number'] = df['transferee_number'].str.replace(pat='[\-\.\/]', repl='-')
+df['transferee_number'] = df['transferee_number'].str.replace(pat=r'[\-\.\/]', repl='-')
 df['transferee_number'] = df['transferee_number'].combine_first(
-    df['transferee'].str.extract(pat='(\d{5,})')[0]
+    df['transferee'].str.extract(pat=r'(\d{5,})')[0]
 )
 
 # %%
@@ -333,7 +349,7 @@ df['transferor_number'] = df['transferor_number'].replace(
         'unincorporated .*': 'unincorporated',
         'not registered': 'unregistered',
     },
-    regex=True
+    regex=True,
 ).replace(
     to_replace={
         value: 'other' for value in [
@@ -365,7 +381,7 @@ df['transferee_number'] = df['transferee_number'].replace(
         'cio': 'other',
         'picpus': 'other',
     },
-    regex=True
+    regex=True,
 )
 
 df['transferee_number'].loc[
@@ -373,13 +389,13 @@ df['transferee_number'].loc[
 ].value_counts()
 
 # %% [markdown]
-# Charity numbers are indicated as a series of numbers between parentheses at the end of the string. 
+# Charity numbers are indicated as a series of numbers between parentheses at the end of the string.
 #
-# However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another). 
+# However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another).
 #
-# Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies. 
+# Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies.
 #
-# This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case. 
+# This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case.
 
 # %% [markdown]
 # ### Number of mergers over time
@@ -388,6 +404,7 @@ df['transferee_number'].loc[
 # #### Most frequent transferors
 
 # %%
+# most frequent transferors as indicated by charity number
 most_frequent_transferors = df['transferor_number'].value_counts()[:10].to_frame()
 
 dfi.export(
@@ -418,7 +435,12 @@ most_frequent_transferors
 # We'll look at charities 1053467 (75 mergers) and 1189059 (5 mergers) later.
 
 # %%
-transferor_freqs = df['transferor_number'].value_counts().value_counts().reset_index(name='freqs')
+transferor_freqs = (
+    df['transferor_number']
+    .value_counts()
+    .value_counts()
+    .reset_index(name='freqs')
+)
 
 transferor_freqs = transferor_freqs.sort_values(by='count')
 
@@ -429,7 +451,7 @@ transferor_freqs = transferor_freqs.set_index('count_of_mergers', drop=True)
 dfi.export(
     transferor_freqs,
     '../charts/transferor_freqs.png',
-    table_conversion='selenium'
+    table_conversion='selenium',
 )
 
 transferor_freqs
@@ -437,24 +459,27 @@ transferor_freqs
 # %% [markdown]
 # Most registered transferors have only been in the position of transferring charity once or twice.
 #
-# This makes sense, since the transferor charity typically ceases to exist as a separate entity after the merger. 
+# This makes sense, since the transferor charity typically ceases to exist as a separate entity after the merger.
 #
 # The outcomes of a merger, as stated by the [Guidance about the register of merged charities](https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#why-register):
 #
 # > - your charity has closed or will close as a result of transferring your assets or
 # > - your charity has not closed only because it has permanent endowment which will not be transferred to the charity you are merging with
 #
-# These repeat transferors might be falling into this second case. 
+# These repeat transferors might be falling into this second case.
 
 # %%
-consolidation_merger = df[['transferor', 'transferee']].loc[df['transferor'].str.contains('1053467')].head()
+consolidation_merger = df.loc[
+    df['transferor'].str.contains('1053467'),
+    ['transferor', 'transferee']
+].head()
 
 consolidation_merger = consolidation_merger.set_index('transferor', drop=True)
 
 dfi.export(
     consolidation_merger,
     '../charts/consolidation_merger.png',
-    table_conversion='selenium'
+    table_conversion='selenium',
 )
 
 consolidation_merger
@@ -462,7 +487,7 @@ consolidation_merger
 # %% [markdown]
 # *The County Durham and Darlington NHS Foundation Trust Charity* seems to be a case of a large consolidation.
 #
-# A number of department-specific NHS charities have merged into one entity. The aim could be to consolidate funds/reduce administrative overhead/streamline operations. 
+# A number of department-specific NHS charities have merged into one entity. The aim could be to consolidate funds/reduce administrative overhead/streamline operations.
 
 # %%
 df['transferor'].value_counts()[:10].to_frame()
@@ -475,17 +500,17 @@ reverse_merger = df.loc[
 dfi.export(
     reverse_merger,
     '../charts/reverse_merger.png',
-    table_conversion='selenium'
+    table_conversion='selenium',
 )
 
 reverse_merger
 
 # %% [markdown]
-# *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* seems to be an example of a "merged" charity splitting into separate entities. 
+# *The Parochial Church Council of the Ecclesiastical Parish of The A453 Churches of South Nottinghamshire* seems to be an example of a "merged" charity splitting into separate entities.
 #
 # It is the most frequent transferor among registered charities, having been in that position 5 times.
 #
-# While this seems to be a reverse merger, it could also be the parent charity distributing some assets to children charities. 
+# While this seems to be a reverse merger, it could also be the parent charity distributing some assets to children charities.
 
 # %% [markdown]
 # #### Most frequent transferees
@@ -506,10 +531,15 @@ dfi.export(
 most_frequent_transferees
 
 # %% [markdown]
-# Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times. 
+# Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
 
 # %%
-transferee_freqs = df['transferee_number'].value_counts().value_counts().reset_index(name='freqs')
+transferee_freqs = (
+    df['transferee_number']
+    .value_counts()
+    .value_counts()
+    .reset_index(name='freqs')
+)
 
 transferee_freqs = transferee_freqs.sort_values(by='count')
 
@@ -520,7 +550,7 @@ transferee_freqs = transferee_freqs.set_index('count_of_mergers', drop=True)
 dfi.export(
     transferee_freqs,
     '../charts/transferee_freqs.png',
-    table_conversion='selenium'
+    table_conversion='selenium',
 )
 
 transferee_freqs
@@ -529,14 +559,15 @@ transferee_freqs
 # Most transferees only go through a merger <5 times.
 
 # %%
-consolidation_merger_kingdom_hall_trust = df[['transferor', 'transferee']].loc[
-    df['transferee'].str.contains('Kingdom Hall Trust')
+consolidation_merger_kingdom_hall_trust = df.loc[
+    df['transferee'].str.contains('Kingdom Hall Trust'),
+    ['transferor', 'transferee']
 ].head()
 
 dfi.export(
     consolidation_merger_kingdom_hall_trust,
     '../charts/consolidation_merger_kingdom_hall_trust.png',
-    table_conversion='selenium'
+    table_conversion='selenium',
 )
 
 consolidation_merger_kingdom_hall_trust = consolidation_merger_kingdom_hall_trust.set_index(
@@ -546,18 +577,15 @@ consolidation_merger_kingdom_hall_trust = consolidation_merger_kingdom_hall_trus
 consolidation_merger_kingdom_hall_trust
 
 # %%
-df[['transferor', 'transferee']].loc[
-    df['transferee'].str.contains('Victim Support')
-].head()
-
-consolidation_merger_victim_support = df[['transferor', 'transferee']].loc[
-    df['transferee'].str.contains('Victim Support')
+consolidation_merger_victim_support = df.loc[
+    df['transferee'].str.contains('Victim Support'),
+    ['transferor', 'transferee']
 ].head()
 
 dfi.export(
     consolidation_merger_victim_support,
     '../charts/consolidation_merger_victim_support.png',
-    table_conversion='selenium'
+    table_conversion='selenium',
 )
 
 consolidation_merger_victim_support = consolidation_merger_victim_support.set_index(
@@ -567,15 +595,15 @@ consolidation_merger_victim_support = consolidation_merger_victim_support.set_in
 consolidation_merger_victim_support
 
 # %% [markdown]
-# Both Kingdom Hall Trust and Victim Support (and other frequent transferees) seem to be consolidation mergers. 
+# Both Kingdom Hall Trust and Victim Support (and other frequent transferees) seem to be consolidation mergers.
 
 # %% [markdown]
 # Summary from a [Brave](https://search.brave.com/search?q=The+Kingdom+Hall+Trust+&summary=1) search:
 #
-# The Kingdom Hall Trust:
-# - Previously known as the London Company of Kingdom Witnesses, it was established on 28th July 1939 and changed its name to The Kingdom Hall Trust on 20th June 1994.
-# - It is a charity associated with Jehovah’s Witnesses, with the charity number GB-CHC-275946.
-# - The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah’s Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
+# > The Kingdom Hall Trust:
+# > - Previously known as the London Company of Kingdom Witnesses, it was established on 28th July 1939 and changed its name to The Kingdom Hall Trust on 20th June 1994.
+# > - It is a charity associated with Jehovah’s Witnesses, with the charity number GB-CHC-275946.
+# > - The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah’s Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
 
 # %% [markdown]
 # #### Count of mergers per year
@@ -616,7 +644,9 @@ chart
 
 # %%
 with open(
-    '../data/publicextract.charity_annual_return_history.json', 'r', encoding='utf-8-sig'
+    '../data/publicextract.charity_annual_return_history.json',
+    'r',
+    encoding='utf-8-sig',
 ) as file:
     data = json.load(file)
 
@@ -630,7 +660,6 @@ df_ar.head()
 
 # %%
 df_ar = df_ar[[
-    'date_of_extract',
     'registered_charity_number',
     'fin_period_start_date',
     'fin_period_end_date',
@@ -646,7 +675,6 @@ df_ar.dtypes
 
 # %%
 date_cols = [
-    'date_of_extract',
     'fin_period_start_date',
     'fin_period_end_date',
 ]
@@ -680,12 +708,16 @@ df.head()
 df_ar['registered_charity_number'] = df_ar['registered_charity_number'].apply(str)
 
 # %%
-df_ar = df_ar.drop(
-    columns=['date_of_extract', 'fin_period_start_date', 'fin_period_end_date', 'total_gross_expenditure']
-)
+df_ar = df_ar.drop(columns=[
+    'fin_period_start_date',
+    'fin_period_end_date',
+    'total_gross_expenditure',
+])
 
 # %%
-df_merged_transferee = df.drop(columns=['date_registered', 'registered-transfer']).merge(
+df_merged_transferee = df.drop(
+    columns=['date_registered', 'registered-transfer']
+).merge(
     df_ar,
     left_on=['transferee_number', 'merger_year'],
     right_on=['registered_charity_number', 'fin_start_year'],
@@ -698,7 +730,9 @@ df_merged_transferee = df.drop(columns=['date_registered', 'registered-transfer'
 )
 
 # %%
-df_merged_transferor = df.drop(columns=['date_registered', 'registered-transfer']).merge(
+df_merged_transferor = df.drop(
+    columns=['date_registered', 'registered-transfer']
+).merge(
     df_ar,
     left_on=['transferor_number', 'merger_year'],
     right_on=['registered_charity_number', 'fin_start_year'],
@@ -721,8 +755,12 @@ df_merged_transferee = df_merged_transferee.dropna(
 
 # %%
 df_merged_transferee['effect'] = (
-    (df_merged_transferee['total_gross_income_y'] - df_merged_transferee['total_gross_income_x'])
-    / df_merged_transferee['total_gross_income_x'] * 100
+    (
+        df_merged_transferee['total_gross_income_y']
+        - df_merged_transferee['total_gross_income_x']
+    )
+    / df_merged_transferee['total_gross_income_x']
+    * 100
 )
 
 # %%
@@ -733,8 +771,12 @@ df_merged_transferor = df_merged_transferor.dropna(
 
 # %%
 df_merged_transferor['effect'] = (
-    (df_merged_transferor['total_gross_income_y'] - df_merged_transferor['total_gross_income_x'])
-    / df_merged_transferor['total_gross_income_x'] * 100
+    (
+        df_merged_transferor['total_gross_income_y']
+        - df_merged_transferor['total_gross_income_x']
+    )
+    / df_merged_transferor['total_gross_income_x']
+    * 100
 )
 
 # %% [markdown]
@@ -765,7 +807,7 @@ chart = (
     .mark_bar()
     .encode(
         alt.X('effect:Q').scale(domain=[-105, 105], clamp=True).title('effect (%)'),
-        alt.Y('count():Q').title('')
+        alt.Y('count():Q').title(''),
     )
 ).properties(
     title='Effect of mergers on annual return of transferees'
@@ -790,15 +832,23 @@ existing_charities.loc[
 # What happens if we exclude Kingdom Hall Trust from our analysis?
 
 # %%
+existing_charities_sans_kht = existing_charities.loc[
+    ~existing_charities['transferee'].str.lower().str.contains('kingdom hall')
+]
+
+# %%
 chart = (
-    alt.Chart(existing_charities.loc[~existing_charities['transferee'].str.lower().str.contains('kingdom hall')]['effect'].dropna().apply(round).to_frame())
+    alt.Chart(existing_charities_sans_kht['effect'].dropna().apply(round).to_frame())
     .mark_bar()
     .encode(
         alt.X('effect:Q').scale(domain=[-105, 105], clamp=True).title('effect (%)'),
-        alt.Y('count():Q').title('')
+        alt.Y('count():Q').title(''),
     )
 ).properties(
-    title=['Effect of mergers on annual return of transferees', '(sans Kingdom Hall Trust)']
+    title=[
+        'Effect of mergers on annual return of transferees',
+        '(sans Kingdom Hall Trust)'
+    ]
 )
 
 chart.save('../charts/effect_transferees_sans.png')
@@ -806,7 +856,7 @@ chart.save('../charts/effect_transferees_sans.png')
 chart
 
 # %% [markdown]
-# The bulk of transferees seem to have had +/- 40% change to their annual returns within the financial period that a merger happened in. 
+# The bulk of transferees seem to have had +/- 40% change to their annual returns within the financial period that a merger happened in.
 
 # %%
 chart = (
@@ -821,17 +871,5 @@ chart = (
 )
 
 chart.save('../charts/effect_transferors.png')
-
-chart
-
-# %%
-chart = (
-    alt.Chart(df_merged_transferor['effect'].dropna().apply(round).to_frame())
-    .mark_bar()
-    .encode(
-        alt.X('effect:Q'),
-        alt.Y('count():Q')
-    )
-)
 
 chart
