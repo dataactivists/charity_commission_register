@@ -156,7 +156,7 @@ chart.save('../charts/count_transfer_registration_year.png')
 chart
 
 # %%
-# view the distribution of timespans between transfer and registration
+# distribution of timespans between transfer and registration
 chart_transfer_bar = (
     alt.Chart(df['date_transferred'].to_frame())
     .mark_bar()
@@ -253,7 +253,7 @@ chart.save('../charts/count_transfer_registration_year_trimmed.png')
 chart
 
 # %%
-# view the distribution of timespans between transfer and registration
+# distribution of timespans between transfer and registration
 chart_transfer_bar = (
     alt.Chart(df['date_transferred'].to_frame())
     .mark_bar()
@@ -435,6 +435,7 @@ most_frequent_transferors
 # We'll look at charities 1053467 (75 mergers) and 1189059 (5 mergers) later.
 
 # %%
+# frequencies of merger events for individual transferors
 transferor_freqs = (
     df['transferor_number']
     .value_counts()
@@ -469,6 +470,7 @@ transferor_freqs
 # These repeat transferors might be falling into this second case.
 
 # %%
+# mergers of most frequent transferor
 consolidation_merger = df.loc[
     df['transferor'].str.contains('1053467'),
     ['transferor', 'transferee']
@@ -490,9 +492,11 @@ consolidation_merger
 # A number of department-specific NHS charities have merged into one entity. The aim could be to consolidate funds/reduce administrative overhead/streamline operations.
 
 # %%
+# most frequent transferors by charity name
 df['transferor'].value_counts()[:10].to_frame()
 
 # %%
+# mergers of second most frequent transferor
 reverse_merger = df.loc[
     df['transferor_number'] == '1189059'
 ].set_index('transferee', drop=True)['transferor'].to_frame()
@@ -520,6 +524,7 @@ reverse_merger
 df['transferee_number'].value_counts()[:10]
 
 # %%
+# most frequent transferees
 most_frequent_transferees = df['transferee'].value_counts()[:10].to_frame()
 
 dfi.export(
@@ -534,6 +539,7 @@ most_frequent_transferees
 # Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
 
 # %%
+# frequencies of merger events for individual transferees
 transferee_freqs = (
     df['transferee_number']
     .value_counts()
@@ -559,6 +565,7 @@ transferee_freqs
 # Most transferees only go through a merger <5 times.
 
 # %%
+# mergers of most frequent transferee
 consolidation_merger_kingdom_hall_trust = df.loc[
     df['transferee'].str.contains('Kingdom Hall Trust'),
     ['transferor', 'transferee']
@@ -577,6 +584,7 @@ consolidation_merger_kingdom_hall_trust = consolidation_merger_kingdom_hall_trus
 consolidation_merger_kingdom_hall_trust
 
 # %%
+# mergers of second most frequent transferee
 consolidation_merger_victim_support = df.loc[
     df['transferee'].str.contains('Victim Support'),
     ['transferor', 'transferee']
@@ -609,6 +617,7 @@ consolidation_merger_victim_support
 # #### Count of mergers per year
 
 # %%
+# merger counts by year
 merger_counts = df.groupby(
     df['date_registered'].dt.year, as_index=True
 )['date_registered'].count()
@@ -618,6 +627,7 @@ merger_counts = merger_counts.to_frame('count').reset_index()
 merger_counts.T
 
 # %%
+# merger counts by year
 chart = (
     alt.Chart(merger_counts)
     .mark_bar()
@@ -643,6 +653,7 @@ chart
 # #### Load data
 
 # %%
+# load annual return data
 with open(
     '../data/publicextract.charity_annual_return_history.json',
     'r',
@@ -659,6 +670,7 @@ df_ar = pd.DataFrame(data)
 df_ar.head()
 
 # %%
+# select cols
 df_ar = df_ar[[
     'registered_charity_number',
     'fin_period_start_date',
@@ -674,6 +686,7 @@ df_ar = df_ar[[
 df_ar.dtypes
 
 # %%
+# convert date cols to datetime
 date_cols = [
     'fin_period_start_date',
     'fin_period_end_date',
@@ -690,6 +703,7 @@ df_ar.dtypes
 # #### Date cols
 
 # %%
+# extract year from date cols
 df_ar['fin_start_year'] = df_ar['fin_period_start_date'].dt.year
 df_ar['fin_end_year'] = df_ar['fin_period_end_date'].dt.year
 
@@ -699,15 +713,18 @@ df_ar.head()
 # #### Merge
 
 # %%
+# extract merger years
 df['merger_year'] = df['date_transferred'].dt.year
 df['merger_year_next'] = df['merger_year'].apply(lambda x: x + 1)
 
 df.head()
 
 # %%
+# convert charity number to string
 df_ar['registered_charity_number'] = df_ar['registered_charity_number'].apply(str)
 
 # %%
+# drop cols
 df_ar = df_ar.drop(columns=[
     'fin_period_start_date',
     'fin_period_end_date',
@@ -715,6 +732,7 @@ df_ar = df_ar.drop(columns=[
 ])
 
 # %%
+# annual return of transferees
 df_merged_transferee = df.drop(
     columns=['date_registered', 'registered-transfer']
 ).merge(
@@ -730,6 +748,7 @@ df_merged_transferee = df.drop(
 )
 
 # %%
+# annual return of transferors
 df_merged_transferor = df.drop(
     columns=['date_registered', 'registered-transfer']
 ).merge(
@@ -748,12 +767,14 @@ df_merged_transferor = df.drop(
 # #### Effect
 
 # %%
+# drop null income values
 df_merged_transferee = df_merged_transferee.dropna(
     subset=['total_gross_income_x', 'total_gross_income_y'],
     how='all'
 )
 
 # %%
+# annual return change from year N to N+1
 df_merged_transferee['effect'] = (
     (
         df_merged_transferee['total_gross_income_y']
@@ -764,12 +785,14 @@ df_merged_transferee['effect'] = (
 )
 
 # %%
+# drop null income values
 df_merged_transferor = df_merged_transferor.dropna(
     subset=['total_gross_income_x', 'total_gross_income_y'],
     how='all'
 )
 
 # %%
+# annual return change from year N to N+1
 df_merged_transferor['effect'] = (
     (
         df_merged_transferor['total_gross_income_y']
@@ -783,6 +806,7 @@ df_merged_transferor['effect'] = (
 # ### Effect of mergers on annual return (draft)
 
 # %%
+# charities with no income before merger
 new_charities = df_merged_transferee.loc[
     (
         pd.isna(df_merged_transferee['total_gross_income_x'])
@@ -794,6 +818,7 @@ new_charities = df_merged_transferee.loc[
 print(f'{new_charities:.0%} of mergers result in the creation of new charities')
 
 # %%
+# charities with an income before and after merger
 existing_charities = df_merged_transferee.loc[
     ~(
         pd.isna(df_merged_transferee['total_gross_income_x'])
@@ -802,6 +827,7 @@ existing_charities = df_merged_transferee.loc[
 ]
 
 # %%
+# effect of mergers on annual return
 chart = (
     alt.Chart(existing_charities['effect'].dropna().apply(round).to_frame())
     .mark_bar()
@@ -823,6 +849,7 @@ chart
 # This peak at 1200 is reminiscent of a previous chart however...
 
 # %%
+# charities with especially large effects
 existing_charities.loc[
     (existing_charities['effect'] < -75)
     & (existing_charities['effect'] > -80) 
@@ -832,11 +859,13 @@ existing_charities.loc[
 # What happens if we exclude Kingdom Hall Trust from our analysis?
 
 # %%
+# drop Kingdom Hall Trust from records
 existing_charities_sans_kht = existing_charities.loc[
     ~existing_charities['transferee'].str.lower().str.contains('kingdom hall')
 ]
 
 # %%
+# effect of mergers on annual return
 chart = (
     alt.Chart(existing_charities_sans_kht['effect'].dropna().apply(round).to_frame())
     .mark_bar()
@@ -859,6 +888,7 @@ chart
 # The bulk of transferees seem to have had +/- 40% change to their annual returns within the financial period that a merger happened in.
 
 # %%
+# effect of mergers on annual return
 chart = (
     alt.Chart(df_merged_transferor['effect'].dropna().apply(round).to_frame())
     .mark_bar()
