@@ -817,6 +817,11 @@ new_charities = df_merged_transferee.loc[
 
 print(f'{new_charities:.0%} of mergers result in the creation of new charities')
 
+# %% [markdown]
+# 12% of mergers result in the creation of new charities.
+#
+# As indicated by the number of unregistered organisations or organisations with an annual return of 0 before merger, and >0 after merger.
+
 # %%
 # charities with an income before and after merger
 existing_charities = df_merged_transferee.loc[
@@ -903,3 +908,9 @@ chart = (
 chart.save('../charts/effect_transferors.png')
 
 chart
+
+# %% [markdown]
+# For most transferors, their annual return either went to 0 or remained the same.
+#
+#
+# This indicates that most transferors either merge into the transferee and cease to exist as an entity, or their merger is largely inconsequential in terms of annual return.
