@@ -653,15 +653,20 @@ chart
 # #### Load data
 
 # %%
-# load annual return data
-with open(
-    '../data/publicextract.charity_annual_return_history.json',
-    'r',
-    encoding='utf-8-sig',
-) as file:
-    data = json.load(file)
+# # load annual return data
+# with open(
+#     '../data/publicextract.charity_annual_return_history.json',
+#     'r',
+#     encoding='utf-8-sig',
+# ) as file:
+#     data = json.load(file)
 
-df_ar = pd.DataFrame(data)
+# df_ar = pd.DataFrame(data)
+
+# df_ar.to_parquet('../data/publicextract.charity_annual_return_history.parquet')
+
+# %%
+df_ar = pd.read_parquet('../data/publicextract.charity_annual_return_history.parquet')
 
 # %% [markdown]
 # #### Cols
