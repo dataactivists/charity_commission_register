@@ -919,3 +919,76 @@ chart
 #
 #
 # This indicates that most transferors either merge into the transferee and cease to exist as an entity, or their merger is largely inconsequential in terms of annual return.
+
+# %% [markdown]
+# ## Trustees
+
+# %% [markdown]
+# ### Intro
+
+# %% [markdown]
+# ### Cleaning `trustees` data
+
+# %% [markdown]
+# #### Load data
+
+# %%
+# # load trustee data
+# with open(
+#     '../data/publicextract.charity_trustee.json',
+#     'r',
+#     encoding='utf-8-sig',
+# ) as file:
+#     data = json.load(file)
+
+# df = pd.DataFrame(data)
+
+# df.to_parquet('../data/publicextract.charity_trustee.parquet')
+
+# %%
+df = pd.read_parquet('../data/publicextract.charity_trustee.parquet')
+
+# %% [markdown]
+# #### Cols
+
+# %%
+df.head()
+
+# %%
+# drop cols
+df = df.drop(columns='date_of_extract')
+
+# %% [markdown]
+# #### `dtypes`
+
+# %%
+df.dtypes
+
+# %%
+# convert date cols to datetime
+df['trustee_date_of_appointment'] = df['trustee_date_of_appointment'].apply(pd.to_datetime)
+
+# %%
+# convert str col to string
+df['trustee_name'] = df['trustee_name'].apply(str)
+
+# %%
+df['individual_or_organisation'].unique()
+
+# %%
+# convert str col to string
+df['individual_or_organisation'] = df['individual_or_organisation'].apply(str)
+
+# %%
+df.dtypes
+
+# %%
+df['trustee_id'].value_counts()[:15]
+
+# %%
+repeat_trustees_ids = df['trustee_id'].value_counts()[:15].index
+
+df.loc[
+    df['trustee_id'].isin(repeat_trustees_ids),
+    ['trustee_id', 'trustee_name', 'individual_or_organisation']
+].value_counts(sort=False)
