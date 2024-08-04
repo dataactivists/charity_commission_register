@@ -251,7 +251,7 @@ df['transferor'].str.extract(r'\(\d+(\D)\d+\)$').dropna()[0].unique()
 
 # %%
 # create charity number cols by extracting contents of last group in parentheses
-# and filling any null values with any string of 5+ numbers
+# and filling any null values with any string of 5+ digits contained in the string
 df['transferor_number'] = df['transferor'].str.lower().str.extract(
     pat=r'\(([^\(]+?)\)$'
 )
@@ -324,13 +324,13 @@ df['transferee_number'].loc[
 ].value_counts()
 
 # %% [markdown]
-# Charity numbers are indicated as a series of numbers between parentheses at the end of the string.
+# Charity numbers are generally indicated in the data files as a series of digits between parentheses at the end of the charity name: for example, `Crisis UK (1082947)`.
 #
-# However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another).
+# The charity numbers are sometimes not between parentheses, sometimes, or contain varying separator characters (1170369-1 vs 1053467.01), or the parentheses contain some other information.
 #
-# Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies.
+# Often, the charity is exempt from having a registration number, and the reason is often indicated, but it is not provided systematically, and the wording varies greatly.
 #
-# This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case.
+# That **the charity numbers or their absence are not indicated in a standardised way** translates to a **need to identify and evaluate the discrepancies case by case**, as this is key information which cannot be discarded. For example, to find which charities are exempt from registration, one first needs to find the many ways that this information is conveyed ("exempt", "excepted", "all exempted", etc.).
 
 # %% [markdown]
 # ### Number of mergers over time
