@@ -340,8 +340,13 @@ df['transferee_number'].loc[
 
 # %%
 # most frequent transferors as indicated by charity number
-most_frequent_transferors = df['transferor_number'].value_counts()[:10].to_frame()
+most_frequent_transferors = df['transferor_number'].apply(
+    lambda x: 'exempt or unregistered or similar' if str(x).isalpha() else x
+).value_counts().to_frame()[:10]
 
+most_frequent_transferors
+
+# %%
 dfi.export(
     most_frequent_transferors,
     '../charts/most_frequent_transferors.png',
