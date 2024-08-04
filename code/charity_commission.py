@@ -145,29 +145,12 @@ chart
 
 # %%
 # distribution of timespans between transfer and registration
-chart_transfer_bar = (
-    alt.Chart(df['date_transferred'].to_frame())
-    .mark_bar()
-    .encode(
-        alt.X('year(date_transferred):T'),
-        alt.Y('count():Q').title('count of records').scale(
-            alt.Scale(domain=[-100, 1600])
-        )
-    )
-)
-
 chart_diff_line = (
     alt.Chart(df[['date_transferred', 'registered-transfer']])
     .mark_line(color='darkred')
     .encode(
-        alt.X('year(date_transferred):T'),
-        alt.Y('registered-transfer:Q').axis(
-            alt.Axis(
-                title='date registered - date of transfer (years)',
-                titleColor='darkred'
-            )
-        ).scale(alt.Scale(domain=[-2.5, 35])),
-        alt.Tooltip('registered-transfer:Q'),
+        alt.X('year(date_transferred):T').title('year of transfer'),
+        alt.Y('registered-transfer:Q').title('Timespan between transfer and registration'),
     )
 )
 
@@ -175,19 +158,14 @@ chart_diff_hist = (
     alt.Chart(df['registered-transfer'].to_frame())
     .mark_bar(color='darkred')
     .encode(
-        alt.X('count():Q').title(
-            'frequencies of N years between transfer and registration'
-        ),
-        alt.Y('registered-transfer:Q').title('').scale(alt.Scale(domain=[-2.5, 35])),
+        alt.X('count():Q').title('frequencies of specific timespans'),
+        alt.Y('registered-transfer:Q').title('').axis(labels=False),
     )
 )
 
 chart = (
-    alt.hconcat(
-        (chart_transfer_bar + chart_diff_line).resolve_scale(y='independent'),
-        chart_diff_hist
-    )
-    .properties(title='Differences between transfer and registration year')
+    alt.hconcat(chart_diff_line, chart_diff_hist).resolve_axis(y='shared')
+    .properties(title='Patterns of number of years between transfer and registration')
 )
 
 chart.save('../charts/diff_transfer_registration_year.png')
