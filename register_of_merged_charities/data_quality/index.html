@@ -420,6 +420,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#effects-on-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effects on analysis
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -543,20 +552,21 @@
 <p>The analysis uncovered some (mostly unintended) issues in data quality and completeness. </p>
 <p>Ideally, this will be raised with the Charity Commission.</p>
 <h3 id="missing-data">Missing data<a class="headerlink" href="#missing-data" title="Permanent link">#</a></h3>
-<p><a href="https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios">Merging two or more Charitable Incorporated Organisations (CIOs)</a> does not require the merger to be registered. Consequently, the register of merged charities will be missing this data. Does this data need to be FOIA'd?</p>
+<p><a href="https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios">Merging two or more Charitable Incorporated Organisations (CIOs)</a> <strong>does not require the merger to be registered</strong>. Consequently, the register of merged charities will be missing this data: this data might need to be FOIA'd to be accessed.</p>
 <h3 id="unexpected-patterns-in-dates">Unexpected patterns in dates<a class="headerlink" href="#unexpected-patterns-in-dates" title="Permanent link">#</a></h3>
-<p>The <em>Register of merged charities</em> contains mergers from 1990, while the registrations start in late 2007. The timespans between the dates of transfer and of registration can go from -1y to 32y, but vary wildly even when outliers are removed.</p>
+<p>The <em>Register of merged charities</em> contains <strong>mergers from 1990</strong>, while the <strong>registrations start in late 2007</strong>. Either the register retroactively included a subset of mergers dating from 1990, or the data was entered erroneously.</p>
 <p><img alt="" src="../../assets/count_transfer_registration_year.png" /></p>
+<p>The <strong>timespans between the dates of transfer and of registration can go from -1y to 32y</strong>, but vary wildly even when outliers are removed. Most mergers are registered a few years after the event, which fits one's understanding of how such processes work: pre-registered mergers or ones registered decades later seem improbable. The repetitive seesaw pattern also seems to indicate errors, though it's not obvious what it's due to.</p>
 <p><img alt="" src="../../assets/diff_transfer_registration_year.png" /></p>
-<p>It seems unlikely that these very few ancient transfers and their late registrations represent reality. The repetitive seesaw pattern also seems to indicate errors, though it's not obvious what it's due to.</p>
-<p>We'll choose to drop any transfers from &lt;2008 in our analysis, as they are few and represent the bulk of the long <code>registered-transfer</code> durations.</p>
+<p>These very few ancient transfers and their late registrations are probably errors, so we'll choose to drop any transfers from &lt;2008 in our analysis, as they are few and represent the bulk of the long <code>registered-transfer</code> durations.</p>
 <h3 id="no-standard-way-of-indicating-charity-numbers">No standard way of indicating charity numbers<a class="headerlink" href="#no-standard-way-of-indicating-charity-numbers" title="Permanent link">#</a></h3>
 <p>Charity numbers are indicated as a series of numbers between parentheses at the end of the string.</p>
-<p>However, this series of numbers is sometimes not between parentheses, sometimes contains a separator (which varies from one transferor to another). </p>
+<p>However, this series of numbers is sometimes not between parentheses, or contains a separator character (which varies from one transferor to another), or is erroneously replaced by the name of the charity. </p>
+<p>Often, the charity is exempt from having a registration number. This reason is often indicated, but it is not provided systematically, and the wording varies greatly. </p>
 <p><img src="../../assets/no_charity_numbers_transferors.png" width="400"></p>
 <p><img src="../../assets/no_charity_numbers_transferees.png" width="400"></p>
-<p>Sometimes, the reason for why charity does not have a charity number is indicated, but it is not provided systematically, and the wording varies.</p>
-<p>This creates hurdles in analysis, as all these discrepancies need to be identified and navigated case by case.</p>
+<h2 id="effects-on-analysis">Effects on analysis<a class="headerlink" href="#effects-on-analysis" title="Permanent link">#</a></h2>
+<p>The issues with data quality create hurdles for any analysis of the Charity Commission data: the erroneous data cannot be discarded, so all these discrepancies need to be identified and navigated case by case.</p>
 
 
 
