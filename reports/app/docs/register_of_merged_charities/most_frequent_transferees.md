@@ -1,12 +1,18 @@
 # Register of merged charities
 
+### Few transferees are unregistered
+
+<img src="../../assets/registered_vs_unregistered_transferees.png" width="300">
+
+Unregistered charities are not frequently in the position of the transferee, which is what we'd expect, as these charities would probably be larger and more established. 
+
 ## Most frequent transferees
 
-<img src="../../assets/most_frequent_transferees.png" width="400">
+<img src="../../assets/most_frequent_transferees.png" width="450">
 
 Without counting the outlier that merged 1200+ times, some transferees have gone through mergers >40 times.
 
-<img src="../../assets/transferee_freqs.png" width="150">
+<img src="../../assets/transferee_freqs.png" width="200">
 
 Most transferees only go through a merger <5 times.
 
