@@ -415,17 +415,17 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#effects-on-analysis" class="md-nav__link">
+          <li class="md-nav__item">
+  <a href="#mitigation" class="md-nav__link">
     <span class="md-ellipsis">
-      Effects on analysis
+      Mitigation
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -560,13 +560,14 @@
 <p><img alt="" src="../../assets/diff_transfer_registration_year.png" /></p>
 <p>These very few ancient transfers and their late registrations are probably errors, so we'll choose to drop any transfers from &lt;2008 in our analysis, as they are few and represent the bulk of the long <code>registered-transfer</code> durations.</p>
 <h3 id="no-standard-way-of-indicating-charity-numbers">No standard way of indicating charity numbers<a class="headerlink" href="#no-standard-way-of-indicating-charity-numbers" title="Permanent link">#</a></h3>
-<p>Charity numbers are indicated as a series of numbers between parentheses at the end of the string.</p>
-<p>However, this series of numbers is sometimes not between parentheses, or contains a separator character (which varies from one transferor to another), or is erroneously replaced by the name of the charity. </p>
-<p>Often, the charity is exempt from having a registration number. This reason is often indicated, but it is not provided systematically, and the wording varies greatly. </p>
+<p>Charity numbers are generally indicated in the data files as a series of digits between parentheses at the end of the charity name: for example, <code>Crisis UK (1082947)</code>.</p>
+<p>The charity numbers are sometimes not between parentheses, sometimes, or contain varying separator characters (1170369-1 vs 1053467.01), or the parentheses contain some other information.</p>
+<p>Often, the charity is exempt from having a registration number, and the reason is often indicated, but it is not provided systematically, and the wording varies greatly. </p>
+<p>That <strong>the charity numbers or their absence are not indicated in a standardised way</strong> translates to a <strong>need to identify and evaluate the discrepancies case by case</strong>, as this is key information which cannot be discarded. For example, to find which charities are exempt from registration, one first needs to find the many ways that this information is conveyed ("exempt", "excepted", "all exempted", etc.).</p>
 <p><img src="../../assets/no_charity_numbers_transferors.png" width="400"></p>
 <p><img src="../../assets/no_charity_numbers_transferees.png" width="400"></p>
-<h2 id="effects-on-analysis">Effects on analysis<a class="headerlink" href="#effects-on-analysis" title="Permanent link">#</a></h2>
-<p>The issues with data quality create hurdles for any analysis of the Charity Commission data: the erroneous data cannot be discarded, so all these discrepancies need to be identified and navigated case by case.</p>
+<h3 id="mitigation">Mitigation<a class="headerlink" href="#mitigation" title="Permanent link">#</a></h3>
+<p>The issues already identified here and those yet to identify will be communicated to the Charity Commission, so as to enable them to improve the data quality and facilitate analysis. </p>
 
 
 
