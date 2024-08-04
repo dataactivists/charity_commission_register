@@ -474,6 +474,23 @@ reverse_merger
 # #### Most frequent transferees
 
 # %%
+# registered vs unregistered
+registered_vs_unregistered_transferees = df['transferee_number'].apply(
+    lambda x: 'exempt or unregistered or similar' if str(x).isalpha() else 'registered'
+).value_counts().to_frame()
+
+dfi.export(
+    registered_vs_unregistered_transferees,
+    '../charts/registered_vs_unregistered_transferees.png',
+    table_conversion='selenium',
+)
+
+registered_vs_unregistered_transferees
+
+# %% [markdown]
+# Unregistered charities are not frequently in the position of the transferee, which is what we'd expect, as these charities would probably be larger and more established. 
+
+# %%
 # check that frequent transferees are all registered
 df['transferee_number'].value_counts()[:10]
 
