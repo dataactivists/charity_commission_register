@@ -124,27 +124,18 @@ df.sort_values('registered-transfer')
 
 # %%
 # count of transfer and registration by year
-chart_transfer_bar = (
-    alt.Chart(df['date_transferred'].to_frame())
-    .mark_line(point=True)
-    .encode(
-        alt.X('count():Q', title=''),
-        alt.Y('year(date_transferred):T').sort('descending'),
-    )
-)
-
-chart_registered_bar = (
-    alt.Chart(df['date_registered'].to_frame())
-    .mark_line(point=True)
-    .encode(
-        alt.X('count():Q', title=''),
-        alt.Y('year(date_registered):T').sort('descending'),
-    )
-)
 
 chart = (
-    alt.hconcat(chart_transfer_bar, chart_registered_bar)
-    .resolve_scale(y='shared')
+    alt.Chart(df[['date_registered', 'date_transferred']])
+    .mark_line(point=alt.OverlayMarkDef(filled=False))
+    .transform_calculate(year_registration='year(datum.date_registered)')
+    .transform_calculate(year_transfer='year(datum.date_transferred)')
+    .transform_fold(['year_registration', 'year_transfer'], as_=['type', 'year'])
+    .encode(
+        alt.X('year:O').title('Year'),
+        alt.Y('count():Q').title(''),
+        alt.Color('type:N').legend(title='Type'), 
+    )
     .properties(title='Count of transfers and registrations by year')
 )
 
