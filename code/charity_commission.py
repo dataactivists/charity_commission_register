@@ -339,24 +339,21 @@ df['transferee_number'].loc[
 # #### Most frequent transferors
 
 # %%
-# most frequent transferors as indicated by charity number
-most_frequent_transferors = df['transferor_number'].apply(
-    lambda x: 'exempt or unregistered or similar' if str(x).isalpha() else x
-).value_counts().to_frame()[:10]
+# registered vs unregistered
+registered_vs_unregistered_transferors = df['transferor_number'].apply(
+    lambda x: 'exempt or unregistered or similar' if str(x).isalpha() else 'registered'
+).value_counts().to_frame()
 
-most_frequent_transferors
-
-# %%
 dfi.export(
-    most_frequent_transferors,
-    '../charts/most_frequent_transferors.png',
+    registered_vs_unregistered_transferors,
+    '../charts/registered_vs_unregistered_transferors.png',
     table_conversion='selenium',
 )
 
-most_frequent_transferors
+registered_vs_unregistered_transferors
 
 # %% [markdown]
-# Most transferors are unregistered, exempt, or excepted.
+# The unregistered, exempt, or excepted transferors are relatively few. 
 #
 # The [Guidance about the register of merged charities](https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#different-types-of-merger) states:
 #
@@ -367,12 +364,10 @@ most_frequent_transferors
 # >   - changing structure - usually a trust or unincorporated association that wants to change to a CIO or charitable company.
 #
 #
-# The prevalence of unregistered/exempt/excepted transferors probably indicates one of two things:
+# These unregistered/exempt/excepted transferors might fall into either of two categories:
 #
 # - Mergers of **very small charities (which are unregistered/exempt) officially joining bigger ones**. It's likely that these small charities are merging with larger ones to gain economies of scale, access to more resources, or to increase their impact. Alternatively, they might be facing hurdles due to funding constraints, regulatory burdens, or other challenges, and merging with a larger charity is a way to ensure their assets and mission continue.
 # - Mergers of charities into **a new structure (CIO or charitable company)**.
-#
-# We'll look at charities 1053467 (75 mergers) and 1189059 (5 mergers) later.
 
 # %%
 # frequencies of merger events for individual transferors
@@ -398,7 +393,7 @@ dfi.export(
 transferor_freqs
 
 # %% [markdown]
-# Most registered transferors have only been in the position of transferring charity once or twice.
+# Most registered transferors have only been in the position of the transferring charity once or twice.
 #
 # This makes sense, since the transferor charity typically ceases to exist as a separate entity after the merger.
 #
@@ -406,8 +401,27 @@ transferor_freqs
 #
 # > - your charity has closed or will close as a result of transferring your assets or
 # > - your charity has not closed only because it has permanent endowment which will not be transferred to the charity you are merging with
-#
-# These repeat transferors might be falling into this second case.
+
+# %% [markdown]
+# The repeat transferors from the following figure might be falling into this second case.
+
+# %%
+# most frequent transferors as indicated by charity number
+most_frequent_transferors = df.loc[
+    ~df['transferor_number'].apply(lambda x: str(x).isalpha()),
+    'transferor_number'
+].value_counts().to_frame()[:10]
+
+dfi.export(
+    most_frequent_transferors,
+    '../charts/most_frequent_transferors.png',
+    table_conversion='selenium',
+)
+
+most_frequent_transferors
+
+# %% [markdown]
+# Let's look at charities 1053467 (75 mergers) and 1189059 (5 mergers).
 
 # %%
 # mergers of most frequent transferor
