@@ -270,9 +270,17 @@ df['transferee_number'] = df['transferee_number'].combine_first(
 
 # %%
 # list values that are not charity numbers
-df['transferor_number'].loc[
+no_charity_number_transferors = df['transferor_number'].loc[
     df['transferor_number'].apply(str).str.contains(r'[a-zA-Z]')
-].value_counts()
+].value_counts().to_frame()
+
+dfi.export(
+    no_charity_number_transferors,
+    '../charts/no_charity_number_transferors.png',
+    table_conversion='selenium'
+)
+
+no_charity_number_transferors
 
 # %%
 # standardise values that are not charity numbers
@@ -303,9 +311,17 @@ df['transferor_number'].loc[
 
 # %%
 # list values that are not charity numbers
-df['transferee_number'].loc[
+no_charity_number_transferees = df['transferee_number'].loc[
     df['transferee_number'].apply(str).str.contains(r'[a-zA-Z]')
-].value_counts()
+].value_counts().to_frame()
+
+dfi.export(
+    no_charity_number_transferees,
+    '../charts/no_charity_number_transferees.png',
+    table_conversion='selenium'
+)
+
+no_charity_number_transferees
 
 # %%
 # standardise values that are not charity numbers
@@ -350,7 +366,7 @@ df.set_index('transferee_number').loc[
 # %%
 # registered vs unregistered
 registered_vs_unregistered_transferors = df['transferor_number'].apply(
-    lambda x: 'exempt or unregistered or similar' if str(x).isalpha() else 'registered'
+    lambda x: 'exempt/unregistered/similar' if str(x).isalpha() else 'registered'
 ).value_counts().to_frame()
 
 dfi.export(
@@ -485,7 +501,7 @@ reverse_merger
 # %%
 # registered vs unregistered
 registered_vs_unregistered_transferees = df['transferee_number'].apply(
-    lambda x: 'exempt or unregistered or similar' if str(x).isalpha() else 'registered'
+    lambda x: 'exempt/unregistered/similar' if str(x).isalpha() else 'registered'
 ).value_counts().to_frame()
 
 dfi.export(
