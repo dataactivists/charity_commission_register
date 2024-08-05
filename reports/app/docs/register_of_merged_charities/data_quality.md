@@ -22,6 +22,10 @@ The **timespans between the dates of transfer and of registration can go from -1
 
 These very few ancient transfers and their late registrations are probably errors, so we'll choose to drop any transfers from <2008 in our analysis, as they are few and represent the bulk of the long `registered-transfer` durations.
 
+### Different spellings for charity names
+
+In a few hundred records, the name of the same charity can be spelled in slightly different ways: for example, *CANTERBURY AND DISTRICT BRANCH OF THE RSPCA* and *RSPCA Canterbury, Dover and District Branch*.
+
 ### No standard way of indicating charity numbers
 
 Charity numbers are generally indicated in the data files as a series of digits between parentheses at the end of the charity name: for example, `Crisis UK (1082947)`.
