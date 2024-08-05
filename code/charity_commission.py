@@ -333,6 +333,15 @@ df['transferee_number'].loc[
 # That **the charity numbers or their absence are not indicated in a standardised way** translates to a **need to identify and evaluate the discrepancies case by case**, as this is key information which cannot be discarded. For example, to find which charities are exempt from registration, one first needs to find the many ways that this information is conveyed ("exempt", "excepted", "all exempted", etc.).
 
 # %% [markdown]
+# #### Charity name spelling
+
+# %%
+df.set_index('transferee_number').loc[
+    df[['transferee_number', 'transferee']].drop_duplicates().groupby('transferee_number').count().sort_values('transferee')[-84:-2].index,
+    'transferee'
+].drop_duplicates()
+
+# %% [markdown]
 # ### Number of mergers over time
 
 # %% [markdown]
