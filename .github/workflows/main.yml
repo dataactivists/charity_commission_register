@@ -17,18 +17,18 @@ jobs:
           sudo apt-get update && sudo apt-get install -y wget
           mkdir -p archive
           wget -O archive/publicextract.charity.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity.zip
-          # wget -O archive/publicextract.charity_annual_return_history.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_annual_return_history.zip
-          # wget -O archive/publicextract.charity_annual_return_parta.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_annual_return_parta.zip
-          # wget -O archive/publicextract.charity_annual_return_partb.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_annual_return_partb.zip
-          # wget -O archive/publicextract.charity_area_of_operation.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_area_of_operation.zip
-          # wget -O archive/publicextract.charity_classification.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_classification.zip
-          # wget -O archive/publicextract.charity_event_history.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_event_history.zip
-          # wget -O archive/publicextract.charity_governing_document.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_governing_document.zip
-          # wget -O archive/publicextract.charity_other_names.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_other_names.zip
-          # wget -O archive/publicextract.charity_other_regulators.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_other_regulators.zip
-          # wget -O archive/publicextract.charity_policy.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_policy.zip
-          # wget -O archive/publicextract.charity_published_report.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_published_report.zip
-          # wget -O archive/publicextract.charity_trustee.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_trustee.zip
+          wget -O archive/publicextract.charity_annual_return_history.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_annual_return_history.zip
+          wget -O archive/publicextract.charity_annual_return_parta.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_annual_return_parta.zip
+          wget -O archive/publicextract.charity_annual_return_partb.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_annual_return_partb.zip
+          wget -O archive/publicextract.charity_area_of_operation.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_area_of_operation.zip
+          wget -O archive/publicextract.charity_classification.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_classification.zip
+          wget -O archive/publicextract.charity_event_history.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_event_history.zip
+          wget -O archive/publicextract.charity_governing_document.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_governing_document.zip
+          wget -O archive/publicextract.charity_other_names.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_other_names.zip
+          wget -O archive/publicextract.charity_other_regulators.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_other_regulators.zip
+          wget -O archive/publicextract.charity_policy.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_policy.zip
+          wget -O archive/publicextract.charity_published_report.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_published_report.zip
+          wget -O archive/publicextract.charity_trustee.zip https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/publicextract.charity_trustee.zip
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
