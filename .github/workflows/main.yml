@@ -52,10 +52,9 @@ jobs:
       - name: Commit changes
         run: |
           sudo apt-get update && sudo apt-get install -y git
-          git lfs install
           git config --global user.email "github-actions@example.com"
           git config --global user.name "GitHub Actions"
           git checkout main
           ls -lah archive/
           git add archive/
-          git diff-index --quiet HEAD || (git commit -m "update archive" && git push https://oauth2:${{ secrets.ARCHIVE_CI_TOKEN }}@github.com/dataactivists/charity_commission_register_archive.git main)
+          git diff-index --quiet HEAD || (git commit -m "update archive" && git push https://oauth2:${{ secrets.ARCHIVE_CI_TOKEN }}@github.com/dataactivists/charity_commission_register.git main)
