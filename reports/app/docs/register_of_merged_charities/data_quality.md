@@ -40,6 +40,12 @@ That **the charity numbers or their absence are not indicated in a standardised 
 
 <img src="../../assets/no_charity_numbers_transferees.png" width="400">
 
+### Historical data
+
+The data made available by the Charity Commission is their latest snapshot, but most analyses that we could do require some amount of historical data, to evidence trends.
+
+Historical information can be extracted from each charity's annual returns, but this approach does not allow for aggregate analysis. While the Charity Commission doesn't provide such historical data, we have created an archiving tool for this purpose.
+
 ### Mitigation
 
 The issues already identified here and those yet to identify will be communicated to the Charity Commission, so as to enable them to improve the data quality and facilitate analysis.
