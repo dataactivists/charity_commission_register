@@ -44,7 +44,7 @@ That **the charity numbers or their absence are not indicated in a standardised 
 
 The data made available by the Charity Commission is their latest snapshot, but most analyses that we could do require some amount of historical data, to evidence trends.
 
-Historical information can be extracted from each charity's annual returns, but this approach does not allow for aggregate analysis. While the Charity Commission doesn't provide such historical data, we have created an archiving tool for this purpose.
+Historical information can be extracted from each charity's annual returns, but this approach does not allow for aggregate analysis. While the Charity Commission doesn't provide such historical data, we have started our own [archival effort](https://github.com/dataactivists/charity_commission_register/tree/main/archive) for this purpose.
 
 ### Mitigation
 
