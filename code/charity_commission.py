@@ -35,7 +35,7 @@
 # For starters, the analysis covers the [Register of merged charities](https://www.gov.uk/government/publications/register-of-merged-charities) data.
 
 # %% [markdown]
-# See the [notebook](https://github.com/harabat/charity_commission_register/blob/main/code/charity_commission.ipynb) for the charts.
+# See the [notebook](https://github.com/dataactivists/charity_commission_register/blob/main/code/charity_commission.ipynb) for the charts.
 
 # %% [markdown]
 # ## Imports
