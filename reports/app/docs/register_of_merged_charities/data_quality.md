@@ -30,7 +30,7 @@ In a few hundred records, the name of the same charity can be spelled in slightl
 
 Charity numbers are generally indicated in the data files as a series of digits between parentheses at the end of the charity name: for example, `Crisis UK (1082947)`.
 
-The charity numbers are sometimes not between parentheses, sometimes, or contain varying separator characters (1170369-1 vs 1053467.01), or the parentheses contain some other information.
+The charity numbers are sometimes not between parentheses, or contain varying separator characters (1170369-1 vs 1053467.01), or the parentheses contain additional information (status or name).
 
 Often, the charity is exempt from having a registration number, and the reason is often indicated, but it is not provided systematically, and the wording varies greatly.
 
