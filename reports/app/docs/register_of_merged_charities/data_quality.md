@@ -24,7 +24,7 @@ These very few ancient transfers and their late registrations are probably error
 
 ### Different spellings for charity names
 
-In a few hundred records, the name of the same charity can be spelled in slightly different ways: for example, *CANTERBURY AND DISTRICT BRANCH OF THE RSPCA* and *RSPCA Canterbury, Dover and District Branch*.
+In a few hundred records, the name of the same charity can be spelled in slightly different ways: for example, *Harrogate & Area Council for Voluntary Service Ltd* and *Harrogate and Area Council for voluntary Services Limited*.
 
 ### No standard way of indicating charity numbers
 
