@@ -96,9 +96,12 @@ df = df.drop(columns='date_vesting')
 df.dtypes
 
 # %%
-# convert first 2 cols to str
-df['transferor'] = df['transferor'].apply(str).apply(str.strip)
-df['transferee'] = df['transferee'].apply(str).apply(str.strip)
+df.convert_dtypes().dtypes
+
+# %%
+# strip whitespace
+df['transferor'] = df['transferor'].apply(str.strip)
+df['transferee'] = df['transferee'].apply(str.strip)
 
 # %%
 # convert date cols to datetime
@@ -342,7 +345,7 @@ df['transferee_number'].loc[
 # %% [markdown]
 # Charity numbers are generally indicated in the data files as a series of digits between parentheses at the end of the charity name: for example, `Crisis UK (1082947)`.
 #
-# The charity numbers are sometimes not between parentheses, sometimes, or contain varying separator characters (1170369-1 vs 1053467.01), or the parentheses contain some other information.
+# The charity numbers are sometimes not between parentheses, or contain varying separator characters (`1170369-1` vs `1053467.01`), or the parentheses contain some other information.
 #
 # Often, the charity is exempt from having a registration number, and the reason is often indicated, but it is not provided systematically, and the wording varies greatly.
 #
@@ -352,10 +355,24 @@ df['transferee_number'].loc[
 # #### Charity name spelling
 
 # %%
+duplicate_names = df.loc[
+    ~(df['transferee_number'].apply(str).str.contains(r'[a-zA-Z]')),
+    ['transferee_number', 'transferee']
+].drop_duplicates().groupby(
+    'transferee_number'
+).count().sort_values('transferee')
+
+duplicate_names = duplicate_names.loc[
+    duplicate_names['transferee'] > 1
+]
+
+duplicate_names.head()
+
+# %%
 df.set_index('transferee_number').loc[
-    df[['transferee_number', 'transferee']].drop_duplicates().groupby('transferee_number').count().sort_values('transferee')[-84:-2].index,
+    duplicate_names.index,
     'transferee'
-].drop_duplicates()
+].drop_duplicates().sort_values().values
 
 # %% [markdown]
 # ### Number of mergers over time
