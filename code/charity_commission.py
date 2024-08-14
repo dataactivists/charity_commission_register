@@ -127,6 +127,25 @@ df['registered-transfer'] = (
 df.sort_values('registered-transfer')
 
 # %%
+# transfer and registration by year
+
+chart = (
+    alt.Chart(df[['date_registered', 'date_transferred']])
+    .mark_circle(point=alt.OverlayMarkDef(filled=False))
+    .transform_calculate(year_registration='year(datum.date_registered)')
+    .transform_calculate(year_transfer='year(datum.date_transferred)')
+    .encode(
+        alt.Y('year_registration:O').sort('-y'),
+        alt.X('year_transfer:O').sort('x'),
+    )
+    .properties(title='Year of transfer vs registration')
+)
+
+chart.save('../charts/transfer_vs_registration_year.png')
+
+chart
+
+# %%
 # count of transfer and registration by year
 
 chart = (
