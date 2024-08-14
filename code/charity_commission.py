@@ -43,6 +43,7 @@
 import altair as alt
 import dataframe_image as dfi
 import json
+import numpy as np
 import pandas as pd
 import seaborn as sns
 # %% [markdown]
@@ -739,7 +740,7 @@ df.head()
 
 # %%
 # convert charity number to string
-df_ar['registered_charity_number'] = df_ar['registered_charity_number'].apply(str)
+df_ar['registered_charity_number'] = df_ar['registered_charity_number'].apply(str).apply(str.strip)
 
 # %%
 # drop cols
@@ -762,8 +763,11 @@ df_merged_transferee = df.drop(
     df_ar,
     left_on=['transferee_number', 'merger_year_next'],
     right_on=['registered_charity_number', 'fin_start_year'],
-    how='left'
+    how='left',
+    suffixes=['_current', '_next']    
 )
+
+df_merged_transferee.head()
 
 # %%
 # annual return of transferors
@@ -778,8 +782,11 @@ df_merged_transferor = df.drop(
     df_ar,
     left_on=['transferor_number', 'merger_year_next'],
     right_on=['registered_charity_number', 'fin_start_year'],
-    how='left'
+    how='left',
+    suffixes=['_current', '_next']
 )
+
+df_merged_transferor.head()
 
 # %% [markdown]
 # #### Effect
@@ -787,56 +794,88 @@ df_merged_transferor = df.drop(
 # %%
 # drop null income values
 df_merged_transferee = df_merged_transferee.dropna(
-    subset=['total_gross_income_x', 'total_gross_income_y'],
+    subset=['total_gross_income_current', 'total_gross_income_next'],
     how='all'
 )
+
+# %%
+# fill empty incomes with 0
+df_merged_transferee[
+    ['total_gross_income_current', 'total_gross_income_next']
+] = df_merged_transferee[
+    ['total_gross_income_current', 'total_gross_income_next']
+].fillna(0)
 
 # %%
 # annual return change from year N to N+1
 df_merged_transferee['effect'] = (
     (
-        df_merged_transferee['total_gross_income_y']
-        - df_merged_transferee['total_gross_income_x']
+        df_merged_transferee['total_gross_income_next']
+        - df_merged_transferee['total_gross_income_current']
     )
-    / df_merged_transferee['total_gross_income_x']
+    / df_merged_transferee['total_gross_income_current']
     * 100
 )
 
 # %%
+# replace incomes appearing or disappearing by +/-100
+df_merged_transferee['effect'] = df_merged_transferee['effect'].replace([-np.inf, np.inf], [-100, 100])
+
+# %%
 # drop null income values
 df_merged_transferor = df_merged_transferor.dropna(
-    subset=['total_gross_income_x', 'total_gross_income_y'],
+    subset=['total_gross_income_current', 'total_gross_income_next'],
     how='all'
 )
+
+# %%
+# fill empty incomes with 0
+df_merged_transferor[
+    ['total_gross_income_current', 'total_gross_income_next']
+] = df_merged_transferor[
+    ['total_gross_income_current', 'total_gross_income_next']
+].fillna(0)
 
 # %%
 # annual return change from year N to N+1
 df_merged_transferor['effect'] = (
     (
-        df_merged_transferor['total_gross_income_y']
-        - df_merged_transferor['total_gross_income_x']
+        df_merged_transferor['total_gross_income_next']
+        - df_merged_transferor['total_gross_income_current']
     )
-    / df_merged_transferor['total_gross_income_x']
+    / df_merged_transferor['total_gross_income_current']
     * 100
 )
+
+# %%
+# replace incomes appearing or disappearing by +/-100
+df_merged_transferor['effect'] = df_merged_transferor['effect'].replace([-np.inf, np.inf], [-100, 100])
 
 # %% [markdown]
 # ### Effect of mergers on annual return (draft)
 
 # %%
-# charities with no income before merger
+# mergers with no income before merger and income after
 new_charities = df_merged_transferee.loc[
     (
-        pd.isna(df_merged_transferee['total_gross_income_x'])
-        | (df_merged_transferee['total_gross_income_x'] == 0)
+        pd.isna(df_merged_transferee['total_gross_income_current'])
+        | (df_merged_transferee['total_gross_income_current'] == 0)
     )
-    & (df_merged_transferee['total_gross_income_y'] > 0)
-].shape[0] / df_merged_transferee.shape[0]
+    & (df_merged_transferee['total_gross_income_next'] > 0)
+]
+
+# count consolidations as 1 merger
+new_charities = new_charities.drop_duplicates(
+    subset=['transferee', 'date_transferred']
+)
+
+# calculate percentage
+new_charities = new_charities.shape[0] / df_merged_transferee.shape[0]
 
 print(f'{new_charities:.0%} of mergers result in the creation of new charities')
 
 # %% [markdown]
-# 12% of mergers result in the creation of new charities.
+# 11% of mergers result in the creation of new charities.
 #
 # As indicated by the number of unregistered organisations or organisations with an annual return of 0 before merger, and >0 after merger.
 
@@ -844,10 +883,20 @@ print(f'{new_charities:.0%} of mergers result in the creation of new charities')
 # charities with an income before and after merger
 existing_charities = df_merged_transferee.loc[
     ~(
-        pd.isna(df_merged_transferee['total_gross_income_x'])
-        | (df_merged_transferee['total_gross_income_x'] == 0)
+        pd.isna(df_merged_transferee['total_gross_income_current'])
+        | (df_merged_transferee['total_gross_income_current'] == 0)
     )
 ]
+
+# %%
+# frequent effect sizes
+existing_charities[['transferee', 'effect']].value_counts()[:10]
+
+# %%
+# count consolidations as 1 merger
+existing_charities = existing_charities[['transferee', 'date_transferred', 'effect']].drop_duplicates()
+
+existing_charities.head()
 
 # %%
 # effect of mergers on annual return
@@ -856,7 +905,7 @@ chart = (
     .mark_bar()
     .encode(
         alt.X('effect:Q').scale(domain=[-105, 105], clamp=True).title('effect (%)'),
-        alt.Y('count():Q').title(''),
+        alt.Y('count():Q').scale(type='log').title('count (log scale)'),
     )
 ).properties(
     title='Effect of mergers on annual return of transferees'
@@ -867,48 +916,19 @@ chart.save('../charts/effect_transferees.png')
 chart
 
 # %% [markdown]
-# Most mergers seem to result in the transferee having a 80% decrease of their annual return.
+# After a merger, most transferee organisations either cease to exist or have a +/- 40% change to their annual return.
+
+# %% [markdown]
+# According to the data, most mergers (including consolidation mergers) are of the type:
 #
-# This peak at 1200 is reminiscent of a previous chart however...
+# - the transferees do not declare an annual return, indicating either that they cease to exist within the financial period
+# - the transferee have a +/- 40% change to their annual returns within the financial period that a merger happened in.
+#
+# The majority of transferees disappearing after a merger is suspicious and might indicate an issue in the analysis or a subsequent merger into a new structure within the financial period.
 
 # %%
-# charities with especially large effects
-existing_charities.loc[
-    (existing_charities['effect'] < -75)
-    & (existing_charities['effect'] > -80) 
-]
-
-# %% [markdown]
-# What happens if we exclude Kingdom Hall Trust from our analysis?
-
-# %%
-# drop Kingdom Hall Trust from records
-existing_charities_sans_kht = existing_charities.loc[
-    ~existing_charities['transferee'].str.lower().str.contains('kingdom hall')
-]
-
-# %%
-# effect of mergers on annual return
-chart = (
-    alt.Chart(existing_charities_sans_kht['effect'].dropna().apply(round).to_frame())
-    .mark_bar()
-    .encode(
-        alt.X('effect:Q').scale(domain=[-105, 105], clamp=True).title('effect (%)'),
-        alt.Y('count():Q').title(''),
-    )
-).properties(
-    title=[
-        'Effect of mergers on annual return of transferees',
-        '(sans Kingdom Hall Trust)'
-    ]
-)
-
-chart.save('../charts/effect_transferees_sans.png')
-
-chart
-
-# %% [markdown]
-# The bulk of transferees seem to have had +/- 40% change to their annual returns within the financial period that a merger happened in.
+# count consolidations as 1 merger
+df_merged_transferor[['transferor', 'date_transferred', 'effect']].value_counts(dropna=False)
 
 # %%
 # effect of mergers on annual return
@@ -917,7 +937,7 @@ chart = (
     .mark_bar()
     .encode(
         alt.X('effect:Q').title('effect (%)'),
-        alt.Y('count():Q').title('')
+        alt.Y('count():Q').scale(type='log').title('count (log scale)')
     )
 ).properties(
     title='Effect of mergers on annual return of transferors'
@@ -930,8 +950,7 @@ chart
 # %% [markdown]
 # For most transferors, their annual return either went to 0 or remained the same.
 #
-#
-# This indicates that most transferors either merge into the transferee and cease to exist as an entity, or their merger is largely inconsequential in terms of annual return.
+# This indicates that most transferors either merge into the transferee and cease to exist as an entity (effect -100%), or their merger is largely inconsequential in terms of annual return. However, some transferors declare their first annual return after the merger (effect +100%), which raises questions about the analysis, but a domain expert might be able to explain this. 
 
 # %% [markdown]
 # ## Trustees
