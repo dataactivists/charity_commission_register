@@ -14,6 +14,8 @@ Ideally, this will be raised with the Charity Commission.
 
 The *Register of merged charities* contains **mergers from 1990**, while the **registrations start in late 2007**. Either the register retroactively included a subset of mergers dating from 1990, or the data was entered erroneously.
 
+![](../assets/transfer_vs_registration_year.png)
+
 ![](../assets/count_transfer_registration_year.png)
 
 The **timespans between the dates of transfer and of registration can go from -1y to 32y**, but vary wildly even when outliers are removed. Most mergers are registered a few years after the event, which fits one's understanding of how such processes work: pre-registered mergers or ones registered decades later seem improbable. The repetitive seesaw pattern also seems to indicate errors, though it's not obvious what it's due to.
