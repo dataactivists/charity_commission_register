@@ -375,23 +375,60 @@ df['transferee_number'].loc[
 # #### Charity name spelling
 
 # %%
-duplicate_names = df.loc[
+duplicate_names_transferees = df.loc[
     ~(df['transferee_number'].apply(str).str.contains(r'[a-zA-Z]')),
     ['transferee_number', 'transferee']
 ].drop_duplicates().groupby(
     'transferee_number'
 ).count().sort_values('transferee')
 
-duplicate_names = duplicate_names.loc[
-    duplicate_names['transferee'] > 1
-]
-
-duplicate_names.head()
+print(
+    f'''
+    {duplicate_names_transferees.loc[
+        duplicate_names_transferees['transferee'] > 1
+    ].size / duplicate_names_transferees.size:.1%} of charity numbers have >1 charity name
+    '''
+)
 
 # %%
-df.set_index('transferee_number').loc[
-    duplicate_names.index,
+duplicate_names_transferees = duplicate_names_transferees.loc[
+    duplicate_names_transferees['transferee'] > 1
+]
+
+duplicate_names_transferees.head()
+
+# %%
+duplicate_names_transferees = df.set_index('transferee_number').loc[
+    duplicate_names_transferees.index,
     'transferee'
+].drop_duplicates().sort_values().values
+
+duplicate_names_transferees
+
+# %%
+duplicate_names_transferors = df.loc[
+    ~(df['transferor_number'].apply(str).str.contains(r'[a-zA-Z]')),
+    ['transferor_number', 'transferor']
+].drop_duplicates().groupby(
+    'transferor_number'
+).count().sort_values('transferor')
+
+print(
+    f'''
+    {duplicate_names_transferors.loc[
+        duplicate_names_transferors['transferor'] > 1
+    ].size / duplicate_names_transferors.size:.1%} of charity numbers have >1 charity name
+    '''
+)
+
+# %%
+duplicate_names_transferors = duplicate_names_transferors.loc[
+    duplicate_names_transferors['transferor'] > 1
+]
+
+duplicate_names_transferors = df.set_index('transferor_number').loc[
+    duplicate_names_transferors.index,
+    'transferor'
 ].drop_duplicates().sort_values().values
 
 # %% [markdown]
