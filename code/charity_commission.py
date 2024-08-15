@@ -914,6 +914,9 @@ df_merged_transferor = df.drop(
 
 df_merged_transferor.head()
 
+# %%
+df_merged_transferee.loc[df_merged_transferee['transferee_number'].str.contains('275946')]
+
 # %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Effect
 
@@ -979,6 +982,9 @@ df_merged_transferor['effect'] = df_merged_transferor['effect'].replace([-np.inf
 
 # %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Effect of mergers on annual return
+
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# #### Transferees
 
 # %%
 # mergers with no income before merger and income after
@@ -1051,6 +1057,9 @@ chart
 # - the transferee have a +/- 40% change to their annual returns within the financial period that a merger happened in.
 #
 # The majority of transferees disappearing after a merger is suspicious and might indicate an issue in the analysis or a subsequent merger into a new structure within the financial period.
+
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# #### Transferors
 
 # %%
 # count consolidations as 1 merger
