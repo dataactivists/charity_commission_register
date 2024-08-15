@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://dataactivists.github.io/charity_commission_register/register_of_merged_charities/data_quality/">
       
       
-        <link rel="prev" href="../intro/">
+        <link rel="prev" href="../..">
       
       
         <link rel="next" href="../most_frequent_transferors/">
@@ -309,27 +309,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../intro/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Intro
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -389,36 +368,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#missing-data" class="md-nav__link">
+  <a href="#inconsistent-date-ranges-and-potential-errors-in-merger-and-registration-dates" class="md-nav__link">
     <span class="md-ellipsis">
-      Missing data
+      Inconsistent date ranges and potential errors in merger and registration dates
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#unexpected-patterns-in-dates" class="md-nav__link">
+  <a href="#inconsistent-charity-number-formatting" class="md-nav__link">
     <span class="md-ellipsis">
-      Unexpected patterns in dates
+      Inconsistent charity number formatting
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#different-spellings-for-charity-names" class="md-nav__link">
+  <a href="#inconsistent-charity-name-spellings" class="md-nav__link">
     <span class="md-ellipsis">
-      Different spellings for charity names
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#no-standard-way-of-indicating-charity-numbers" class="md-nav__link">
-    <span class="md-ellipsis">
-      No standard way of indicating charity numbers
+      Inconsistent charity name spellings
     </span>
   </a>
   
@@ -428,6 +398,15 @@
   <a href="#historical-data" class="md-nav__link">
     <span class="md-ellipsis">
       Historical data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing data
     </span>
   </a>
   
@@ -567,31 +546,45 @@
 
 <h1 id="register-of-merged-charities">Register of merged charities<a class="headerlink" href="#register-of-merged-charities" title="Permanent link">#</a></h1>
 <h2 id="observations-on-data-quality">Observations on data quality<a class="headerlink" href="#observations-on-data-quality" title="Permanent link">#</a></h2>
-<p>The analysis uncovered some issues in data quality and completeness.</p>
-<p>Ideally, this will be raised with the Charity Commission.</p>
-<h3 id="missing-data">Missing data<a class="headerlink" href="#missing-data" title="Permanent link">#</a></h3>
-<p><a href="https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios">Merging two or more Charitable Incorporated Organisations (CIOs)</a> <strong>does not require the merger to be registered</strong>. Consequently, the register of merged charities will be missing this data: this data might need to be FOIA'd to be accessed.</p>
-<h3 id="unexpected-patterns-in-dates">Unexpected patterns in dates<a class="headerlink" href="#unexpected-patterns-in-dates" title="Permanent link">#</a></h3>
+<p>The UK Charity Commission is responsible for registering and regulating charities in England and Wales. The Commission's data provides valuable insights into the charity sector, including information on charity registrations, mergers, and financial activities. However, the quality of this data is crucial for accurate analysis and decision-making.</p>
+<p>One of the goals of our analysis is to identify and document data quality and completeness issues: we intend to raise this with the Charity Commission so as to improve the accuracy and reliability of analysis and decision-making in the charity sector.</p>
+<h3 id="inconsistent-date-ranges-and-potential-errors-in-merger-and-registration-dates">Inconsistent date ranges and potential errors in merger and registration dates<a class="headerlink" href="#inconsistent-date-ranges-and-potential-errors-in-merger-and-registration-dates" title="Permanent link">#</a></h3>
 <p>The <em>Register of merged charities</em> contains <strong>mergers from 1990</strong>, while the <strong>registrations start in late 2007</strong>. Either the register retroactively included a subset of mergers dating from 1990, or the data was entered erroneously.</p>
 <p><img alt="" src="../../assets/transfer_vs_registration_year.png" /></p>
 <p><img alt="" src="../../assets/count_transfer_registration_year.png" /></p>
-<p>The <strong>timespans between the dates of transfer and of registration can go from -1y to 32y</strong>, but vary wildly even when outliers are removed. Most mergers are registered a few years after the event, which fits one's understanding of how such processes work: pre-registered mergers or ones registered decades later seem improbable. The repetitive seesaw pattern also seems to indicate errors, though it's not obvious what it's due to.</p>
+<p>The <strong>timespans between the dates of transfer and of registration can go from -1y to 32y</strong>, but vary wildly even when outliers are removed. Most mergers are registered a few years after the event, which fits one's understanding of how such processes work: pre-registered mergers or ones registered decades later seem improbable. </p>
+<p>The repetitive seesaw pattern also seems to indicate systematic errors in data processing rather than in data entry, though it's not obvious what it's due to.</p>
 <p><img alt="" src="../../assets/diff_transfer_registration_year.png" /></p>
 <p>These very few ancient transfers and their late registrations are probably errors, so we'll choose to drop any transfers from &lt;2008 in our analysis, as they are few and represent the bulk of the long <code>registered-transfer</code> durations.</p>
-<h3 id="different-spellings-for-charity-names">Different spellings for charity names<a class="headerlink" href="#different-spellings-for-charity-names" title="Permanent link">#</a></h3>
-<p>In a few hundred records, the name of the same charity can be spelled in slightly different ways: for example, <em>Harrogate &amp; Area Council for Voluntary Service Ltd</em> and <em>Harrogate and Area Council for voluntary Services Limited</em>.</p>
-<h3 id="no-standard-way-of-indicating-charity-numbers">No standard way of indicating charity numbers<a class="headerlink" href="#no-standard-way-of-indicating-charity-numbers" title="Permanent link">#</a></h3>
+<h3 id="inconsistent-charity-number-formatting">Inconsistent charity number formatting<a class="headerlink" href="#inconsistent-charity-number-formatting" title="Permanent link">#</a></h3>
 <p>Charity numbers are generally indicated in the data files as a series of digits between parentheses at the end of the charity name: for example, <code>Crisis UK (1082947)</code>.</p>
 <p>The charity numbers are sometimes not between parentheses, or contain varying separator characters (1170369-1 vs 1053467.01), or the parentheses contain additional information (status or name).</p>
 <p>Often, the charity is exempt from having a registration number, and the reason is often indicated, but it is not provided systematically, and the wording varies greatly.</p>
 <p>That <strong>the charity numbers or their absence are not indicated in a standardised way</strong> translates to a <strong>need to identify and evaluate the discrepancies case by case</strong>, as this is key information which cannot be discarded. For example, to find which charities are exempt from registration, one first needs to find the many ways that this information is conveyed ("exempt", "excepted", "all exempted", etc.).</p>
-<p><img src="../../assets/no_charity_numbers_transferors.png" width="400"></p>
-<p><img src="../../assets/no_charity_numbers_transferees.png" width="400"></p>
+<p><img src="../../assets/no_charity_number_transferors.png" width="400"></p>
+<p><img src="../../assets/no_charity_number_transferees.png" width="400"></p>
+<h3 id="inconsistent-charity-name-spellings">Inconsistent charity name spellings<a class="headerlink" href="#inconsistent-charity-name-spellings" title="Permanent link">#</a></h3>
+<p><strong>3% of charities, as identified by their charity number, present inconsistent spelling of their name</strong>: for example, <em>Harrogate &amp; Area Council for Voluntary Service Ltd</em> and <em>Harrogate and Area Council for voluntary Services Limited</em>. </p>
+<p>In most cases, this is due to data entry errors, but sometimes it's ambiguous whether the charity changed its name. While individual charities can be identified through the charity number, the inconsistencies in that information as explained above might affect accuracy. </p>
 <h3 id="historical-data">Historical data<a class="headerlink" href="#historical-data" title="Permanent link">#</a></h3>
-<p>The data made available by the Charity Commission is their latest snapshot, but most analyses that we could do require some amount of historical data, to evidence trends.</p>
-<p>Historical information can be extracted from each charity's annual returns, but this approach does not allow for aggregate analysis. While the Charity Commission doesn't provide such historical data, we have started our own <a href="https://github.com/dataactivists/charity_commission_register/tree/main/archive">archival effort</a> for this purpose.</p>
+<p>The data made available by the Charity Commission is their latest snapshot, but most analyses that we could do require some amount of historical data, to evidence trends. Historical information can be extracted from each charity's annual returns, but this approach does not allow for aggregate analysis. </p>
+<p>While the Charity Commission doesn't provide such historical data, we have started our own <a href="https://github.com/dataactivists/charity_commission_register/tree/main/archive">archival effort</a> for this purpose. This involves:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> collecting and storing the Charity Commission's open data daily</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> storing the data in a standardised format that allows diffing</li>
+<li>providing access to the historical data for researchers and analysts.</li>
+</ul>
+<h3 id="missing-data">Missing data<a class="headerlink" href="#missing-data" title="Permanent link">#</a></h3>
+<p><a href="https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios">Merging two or more Charitable Incorporated Organisations (CIOs)</a> <strong>does not require the merger to be registered</strong>. Consequently, the register of merged charities will be missing this data: this data might need to be FOIA'd to be accessed.</p>
 <h3 id="mitigation">Mitigation<a class="headerlink" href="#mitigation" title="Permanent link">#</a></h3>
 <p>The issues already identified here and those yet to identify will be communicated to the Charity Commission, so as to enable them to improve the data quality and facilitate analysis.</p>
+<p>To address the issue of inconsistent dates, spellings, and numbers, we recommend that the Charity Commission:</p>
+<ul>
+<li>Conduct a thorough review of the data to identify and correct errors</li>
+<li>Develop and implement data validation rules to prevent errors</li>
+<li>Move the charity number into its own column in the data and validate its format</li>
+<li>Provide clear guidance to users on how to interpret and use the data</li>
+</ul>
 
 
 
@@ -621,7 +614,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../intro/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Intro">
+          <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Readme">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -631,7 +624,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Intro
+                Readme
               </div>
             </div>
           </a>
