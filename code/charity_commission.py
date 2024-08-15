@@ -689,8 +689,8 @@ consolidation_merger_victim_support
 # %%
 # merger counts by year
 merger_counts = df.groupby(
-    df['date_registered'].dt.year, as_index=True
-)['date_registered'].count()
+    df['date_transferred'].dt.year, as_index=True
+)['date_transferred'].count()
 
 merger_counts = merger_counts.to_frame('count').reset_index()
 
@@ -702,9 +702,9 @@ chart = (
     alt.Chart(merger_counts)
     .mark_bar()
     .encode(
-        alt.Y('date_registered:N', title=''),
+        alt.Y('date_transferred:N', title=''),
         alt.X('count:Q', title=''),
-        alt.Color('date_registered:N', legend=None, scale=alt.Scale(scheme='dark2')),
+        alt.Color('date_transferred:N', legend=None, scale=alt.Scale(scheme='dark2')),
     )
     .properties(
         title='Mergers per year, 2008-2024',
@@ -713,6 +713,36 @@ chart = (
 )
 
 chart.save('../charts/merger_counts.png')
+
+chart
+
+# %%
+# merger counts by year
+merger_counts_unique = df.drop_duplicates(subset=['transferee', 'date_transferred']).groupby(
+    df['date_transferred'].dt.year, as_index=True
+)['date_transferred'].count()
+
+merger_counts_unique = merger_counts_unique.to_frame('count').reset_index()
+
+merger_counts_unique.T
+
+# %%
+# merger counts by year
+chart = (
+    alt.Chart(merger_counts_unique)
+    .mark_bar()
+    .encode(
+        alt.Y('date_transferred:N', title=''),
+        alt.X('count:Q', title=''),
+        alt.Color('date_transferred:N', legend=None, scale=alt.Scale(scheme='dark2')),
+    )
+    .properties(
+        title='Mergers per year (consolidation = 1 merger), 2008-2024',
+        width=600
+    )
+)
+
+chart.save('../charts/merger_counts_unique.png')
 
 chart
 
