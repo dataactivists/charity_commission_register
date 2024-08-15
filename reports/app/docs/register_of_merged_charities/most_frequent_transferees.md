@@ -8,7 +8,7 @@ Unregistered charities are not frequently in the position of the transferee, whi
 
 ## Most frequent transferees
 
-There's an outlier that went through 1200+ mergers, while some other transferees have gone through mergers >40 times.
+An outlier went through 1200+ mergers, while some other transferees have gone through mergers >40 times.
 
 <img src="../../assets/most_frequent_transferees.png" width="450">
 
@@ -22,10 +22,7 @@ Both *Kingdom Hall Trust* and *Victim Support* (and other frequent transferees) 
 
 <img src="../../assets/consolidation_merger_victim_support.png" width="500">
 
-Summary from a [Brave](https://search.brave.com/search?q=The+Kingdom+Hall+Trust+&summary=1) search:
+Summary from a [Civil Society](https://www.civilsociety.co.uk/news/over-1000-charities-combine-in-one-of-largest-mergers-ever.html) article:
 
-> The Kingdom Hall Trust:
-> 
-> - Previously known as the London Company of Kingdom Witnesses, it was established on 28th July 1939 and changed its name to The Kingdom Hall Trust on 20th June 1994.
-> - It is a charity associated with Jehovah's Witnesses, with the charity number GB-CHC-275946.
-> - The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah's Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
+> - Earlier this year, 1,279 Jehovah’s Witness congregations merged into national charity the Kingdom Hall Trust.
+> - As these mergers took place, from 2018-19 to 2020-21, the trust's income rose from £7m to £133m.
