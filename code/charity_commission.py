@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -49,7 +49,7 @@ import seaborn as sns
 # %% [markdown]
 # ## Register of merged charities
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Intro
 
 # %% [markdown]
@@ -58,16 +58,16 @@ import seaborn as sns
 # %% [markdown]
 # - [Merging two or more Charitable Incorporated Organisations (CIOs)](https://www.gov.uk/government/publications/register-of-merged-charities/guidance-about-the-register-of-merged-charities#merging-two-or-more-charitable-incorporated-organisations-cios) does not require the merger to be registered. Consequently, the register of merged charities will be missing this data. Does this data need to be FOIA'd?
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Cleaning `merger` data
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Load data
 
 # %%
-df = pd.read_csv('../data/mergers_register_march_2024.csv', encoding='cp1252')
+df = pd.read_csv('../data/mergers_register_july_2024.csv', encoding='cp1252')
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Cols
 
 # %%
@@ -90,7 +90,7 @@ df.info()
 # drop column with null values
 df = df.drop(columns='date_vesting')
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### `dtypes`
 
 # %%
@@ -112,7 +112,7 @@ df[date_cols] = df[date_cols].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y
 
 df.head()
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Date cols
 
 # %% [markdown]
@@ -261,7 +261,7 @@ chart.save('../charts/diff_transfer_registration_year_trimmed.png')
 
 chart
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Extract charity numbers
 
 # %%
@@ -371,7 +371,7 @@ df['transferee_number'].loc[
 #
 # That **the charity numbers or their absence are not indicated in a standardised way** translates to a **need to identify and evaluate the discrepancies case by case**, as this is key information which cannot be discarded. For example, to find which charities are exempt from registration, one first needs to find the many ways that this information is conveyed ("exempt", "excepted", "all exempted", etc.).
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Charity name spelling
 
 # %%
@@ -431,10 +431,10 @@ duplicate_names_transferors = df.set_index('transferor_number').loc[
     'transferor'
 ].drop_duplicates().sort_values().values
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Number of mergers over time
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Most frequent transferors
 
 # %%
@@ -569,7 +569,7 @@ reverse_merger
 #
 # While this seems to be a reverse merger, it could also be the parent charity distributing some assets to children charities.
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Most frequent transferees
 
 # %%
@@ -683,7 +683,7 @@ consolidation_merger_victim_support
 # > - It is a charity associated with Jehovah’s Witnesses, with the charity number GB-CHC-275946.
 # > - The charity has undergone a significant merger in 2022, incorporating 1,279 Jehovah’s Witness congregations into the national charity. This is considered one of the largest charity mergers ever.
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Count of mergers per year
 
 # %%
@@ -746,10 +746,10 @@ chart.save('../charts/merger_counts_unique.png')
 
 chart
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Joining with `annual returns` data
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Load data
 
 # %%
@@ -768,7 +768,7 @@ chart
 # %%
 df_ar = pd.read_parquet('../data/publicextract.charity_annual_return_history.parquet')
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Cols
 
 # %%
@@ -784,7 +784,7 @@ df_ar = df_ar[[
     'total_gross_expenditure',
 ]]
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### `dtypes`
 
 # %%
@@ -804,7 +804,7 @@ df_ar.head()
 # %%
 df_ar.dtypes
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Date cols
 
 # %%
@@ -814,7 +814,7 @@ df_ar['fin_end_year'] = df_ar['fin_period_end_date'].dt.year
 
 df_ar.head()
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Merge
 
 # %%
@@ -874,7 +874,7 @@ df_merged_transferor = df.drop(
 
 df_merged_transferor.head()
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Effect
 
 # %%
@@ -937,7 +937,7 @@ df_merged_transferor['effect'] = (
 # replace incomes appearing or disappearing by +/-100
 df_merged_transferor['effect'] = df_merged_transferor['effect'].replace([-np.inf, np.inf], [-100, 100])
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Effect of mergers on annual return
 
 # %%
@@ -1038,13 +1038,13 @@ chart
 #
 # This indicates that most transferors either merge into the transferee and cease to exist as an entity (effect -100%), or their merger is largely inconsequential in terms of annual return. However, some transferors declare their first annual return after the merger (effect +100%), which raises questions about the analysis, but a domain expert might be able to explain this. 
 
-# %% [markdown]
-# ## Trustees
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# ## Trustees (draft)
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Intro
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # ### Cleaning `trustees` data
 
 # %% [markdown]
