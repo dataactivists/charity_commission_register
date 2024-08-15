@@ -717,7 +717,7 @@ chart.save('../charts/merger_counts.png')
 chart
 
 # %% [markdown]
-# ### Joining with `annual returns` data (draft)
+# ### Joining with `annual returns` data
 
 # %% [markdown]
 # #### Load data
@@ -908,7 +908,7 @@ df_merged_transferor['effect'] = (
 df_merged_transferor['effect'] = df_merged_transferor['effect'].replace([-np.inf, np.inf], [-100, 100])
 
 # %% [markdown]
-# ### Effect of mergers on annual return (draft)
+# ### Effect of mergers on annual return
 
 # %%
 # mergers with no income before merger and income after
