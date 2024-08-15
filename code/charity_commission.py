@@ -594,8 +594,24 @@ registered_vs_unregistered_transferees
 df['transferee_number'].value_counts()[:10]
 
 # %%
+# frequent transferees
+frequent_transferees = df[
+    ['transferee_number', 'transferee']
+].value_counts().to_frame().reset_index().sort_values(
+    ['transferee_number', 'count'], ascending=False
+).groupby(
+    'transferee_number', as_index=False
+).agg(
+    {'transferee': 'first', 'count':'sum'}
+).sort_values('count', ascending=False).reset_index(drop=True)
+
+frequent_transferees
+
+# %%
 # most frequent transferees
-most_frequent_transferees = df['transferee'].value_counts()[:10].to_frame()
+most_frequent_transferees = frequent_transferees.drop(
+    columns='transferee_number'
+).set_index('transferee').sort_values('count',ascending=False)[:10]
 
 dfi.export(
     most_frequent_transferees,
@@ -631,6 +647,12 @@ dfi.export(
 
 transferee_freqs
 
+# %%
+alt.Chart(transferee_freqs.reset_index()).mark_bar().encode(
+    alt.X('frequency:Q'),
+    alt.Y('count_of_mergers:N'),
+)
+
 # %% [markdown]
 # Most transferees only go through a merger <5 times.
 
@@ -638,7 +660,7 @@ transferee_freqs
 # mergers of most frequent transferee
 consolidation_merger_kingdom_hall_trust = df.loc[
     df['transferee'].str.contains('Kingdom Hall Trust'),
-    ['transferor', 'transferee']
+    ['transferee', 'transferor']
 ].head()
 
 dfi.export(
@@ -648,7 +670,7 @@ dfi.export(
 )
 
 consolidation_merger_kingdom_hall_trust = consolidation_merger_kingdom_hall_trust.set_index(
-    'transferor', drop=True
+    'transferee', drop=True
 )
 
 consolidation_merger_kingdom_hall_trust
@@ -657,7 +679,7 @@ consolidation_merger_kingdom_hall_trust
 # mergers of second most frequent transferee
 consolidation_merger_victim_support = df.loc[
     df['transferee'].str.contains('Victim Support'),
-    ['transferor', 'transferee']
+    ['transferee', 'transferor']
 ].head()
 
 dfi.export(
@@ -667,7 +689,7 @@ dfi.export(
 )
 
 consolidation_merger_victim_support = consolidation_merger_victim_support.set_index(
-    'transferor', drop=True
+    'transferee', drop=True
 )
 
 consolidation_merger_victim_support
