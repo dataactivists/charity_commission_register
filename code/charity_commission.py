@@ -46,6 +46,10 @@ import json
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import warnings
+# %%
+warnings.filterwarnings('ignore')
+
 # %% [markdown]
 # ## Register of merged charities
 
