@@ -505,6 +505,20 @@ transferor_freqs
 # The repeat transferors from the following figure might be falling into this second case.
 
 # %%
+# frequent transferors
+frequent_transferors = df[
+    ['transferor_number', 'transferor']
+].value_counts().to_frame().reset_index().sort_values(
+    ['transferor_number', 'count'], ascending=False
+).groupby(
+    'transferor_number', as_index=False
+).agg(
+    {'transferor': 'first', 'count':'sum'}
+).sort_values('count', ascending=False).reset_index(drop=True)
+
+frequent_transferors
+
+# %%
 # most frequent transferors as indicated by charity number
 most_frequent_transferors = df.loc[
     ~df['transferor_number'].apply(lambda x: str(x).isalpha()),
